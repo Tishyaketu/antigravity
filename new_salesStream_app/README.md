@@ -92,7 +92,7 @@ You will see a structured report containing:
 Verify the integrity of the stream engine, cleaning logic, and data models using the automated test suite.
 
 ```bash
-python3 -m unittest discover -s tests
+python3 -m unittest discover -s tests -v
 ```
 
 ---
@@ -116,7 +116,7 @@ To verify the 100% coverage claim:
 
 1. **Run Analysis**:
    ```bash
-   python3 -m coverage run --source=src -m unittest discover -s tests
+   python3 -m coverage run --source=src -m unittest discover -s tests -v
    ```
 
 2. **View Report**:
