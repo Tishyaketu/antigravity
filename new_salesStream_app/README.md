@@ -1,0 +1,2 @@
+Sales Stream AnalysisA modular, functional programming-based application for analyzing Amazon sales data.Project Structurerun.py: Entry point script.src/sales_analysis/core/: Contains the reusable Stream engine and data models.src/sales_analysis/ingestion/: Handles data cleaning and CSV loading.src/sales_analysis/app.py: Contains the specific analytical queries (Revenue, Top Discounts, etc.).How to RunEnsure amazon.csv is in the data/ folder.Run the application:python3 run.py
+Run tests:python3 tests/test_stream.py
