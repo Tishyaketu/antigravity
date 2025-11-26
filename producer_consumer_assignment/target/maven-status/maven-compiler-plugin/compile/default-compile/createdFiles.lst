@@ -1,6 +1,1 @@
-com/assessment/workers/Consumer.class
 com/assessment/workers/Producer.class
-com/assessment/app/Main.class
-com/assessment/tests/TestBlockingQueue$TestResult.class
-com/assessment/tests/TestBlockingQueue.class
-com/assessment/core/SimpleBlockingQueue.class

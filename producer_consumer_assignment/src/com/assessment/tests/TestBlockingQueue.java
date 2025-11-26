@@ -6,6 +6,8 @@ import java.util.Collections;
 import com.assessment.core.SimpleBlockingQueue;
 
 import com.assessment.app.Main;
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
 
 public class TestBlockingQueue {
 
@@ -53,6 +55,14 @@ public class TestBlockingQueue {
         // If blocking worked in both directions, the Wait/Notify mechanism is verified
         boolean waitNotifyPass = prodBlockPass && consBlockPass;
         results.add(new TestResult("Mech: Wait/Notify Mechanism", waitNotifyPass));
+
+        // --- TEST 4.0: Real Workers ---
+        boolean workersPass = testRealWorkerClasses();
+        results.add(new TestResult("4.0 Real Worker Classes", workersPass));
+
+        // --- TEST 5.0: Main App ---
+        boolean mainPass = testMainApp();
+        results.add(new TestResult("5.0 Main App Entry", mainPass));
 
         // Calculate totals
         long passedCount = results.stream().filter(r -> r.passed).count();
@@ -201,6 +211,63 @@ public class TestBlockingQueue {
         } else {
             System.out.println("FAILED (Thread State: " + t.getState() + ")");
             return false;
+        }
+    }
+
+    // --- TEST METHOD 6: Real Worker Classes ---
+    public static boolean testRealWorkerClasses() throws InterruptedException {
+        System.out.print("[Test 4.0] Real Producer/Consumer Classes... ");
+
+        List<Integer> source = new ArrayList<>();
+        source.add(100);
+        source.add(200);
+        source.add(300);
+
+        List<Integer> dest = Collections.synchronizedList(new ArrayList<>());
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(2);
+
+        com.assessment.workers.Producer producer = new com.assessment.workers.Producer(queue, source);
+        com.assessment.workers.Consumer consumer = new com.assessment.workers.Consumer(queue, dest);
+
+        Thread pThread = new Thread(producer);
+        Thread cThread = new Thread(consumer);
+
+        pThread.start();
+        cThread.start();
+
+        pThread.join(5000);
+        cThread.join(5000);
+
+        if (dest.equals(source)) {
+            System.out.println("PASSED");
+            return true;
+        } else {
+            System.out.println("FAILED (Dest: " + dest + ")");
+            return false;
+        }
+    }
+
+    // --- TEST METHOD 7: Main Application Entry Point ---
+    public static boolean testMainApp() {
+        System.out.print("[Test 5.0] Main App Execution... ");
+
+        InputStream originalIn = System.in;
+        try {
+            // Simulate user typing "5" for capacity
+            String input = "5\n";
+            System.setIn(new java.io.ByteArrayInputStream(input.getBytes()));
+
+            // Run Main
+            Main.main(new String[] {});
+
+            System.out.println("PASSED");
+            return true;
+        } catch (Exception e) {
+            System.out.println("FAILED (" + e.getMessage() + ")");
+            e.printStackTrace();
+            return false;
+        } finally {
+            System.setIn(originalIn);
         }
     }
 }

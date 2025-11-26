@@ -7,33 +7,33 @@ import com.assessment.core.SimpleBlockingQueue;
 public class Producer implements Runnable {
     private final SimpleBlockingQueue&lt;Integer&gt; queue;
     private final List&lt;Integer&gt; sourceData;
-<span class="nc" id="L10">    private final Random random = new Random(); // Initialize Random</span>
+<span class="fc" id="L10">    private final Random random = new Random(); // Initialize Random</span>
 
-<span class="nc" id="L12">    public Producer(SimpleBlockingQueue&lt;Integer&gt; queue, List&lt;Integer&gt; sourceData) {</span>
-<span class="nc" id="L13">        this.queue = queue;</span>
-<span class="nc" id="L14">        this.sourceData = sourceData;</span>
-<span class="nc" id="L15">    }</span>
+<span class="fc" id="L12">    public Producer(SimpleBlockingQueue&lt;Integer&gt; queue, List&lt;Integer&gt; sourceData) {</span>
+<span class="fc" id="L13">        this.queue = queue;</span>
+<span class="fc" id="L14">        this.sourceData = sourceData;</span>
+<span class="fc" id="L15">    }</span>
 
     @Override
     public void run() {
         try {
-<span class="nc" id="L20">            System.out.println(&quot;\n[Producer] Starting to process &quot; + sourceData.size() + &quot; items.&quot;);</span>
+<span class="fc" id="L20">            System.out.println(&quot;\n[Producer] Starting to process &quot; + sourceData.size() + &quot; items.&quot;);</span>
 
-<span class="nc bnc" id="L22" title="All 2 branches missed.">            for (Integer item : sourceData) {</span>
-<span class="nc" id="L23">                System.out.println(&quot;[Producer] Reading from source: &quot; + item);</span>
-<span class="nc" id="L24">                queue.put(item);</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">            for (Integer item : sourceData) {</span>
+<span class="fc" id="L23">                System.out.println(&quot;[Producer] Reading from source: &quot; + item);</span>
+<span class="fc" id="L24">                queue.put(item);</span>
 
                 // DYNAMIC SPEED: Random sleep between 100ms and 800ms
-<span class="nc" id="L27">                int delay = 100 + random.nextInt(700);</span>
-<span class="nc" id="L28">                Thread.sleep(delay);</span>
+<span class="fc" id="L27">                int delay = 100 + random.nextInt(700);</span>
+<span class="fc" id="L28">                Thread.sleep(delay);</span>
             }
 
-<span class="nc" id="L31">            System.out.println(&quot;[Producer] Work finished. Sending POISON PILL (-1)...&quot;);</span>
-<span class="nc" id="L32">            queue.put(-1);</span>
+<span class="fc" id="L31">            System.out.println(&quot;[Producer] Work finished. Sending POISON PILL (-1)...&quot;);</span>
+<span class="fc" id="L32">            queue.put(-1);</span>
 
-<span class="nc" id="L34">        } catch (InterruptedException e) {</span>
+<span class="pc" id="L34">        } catch (InterruptedException e) {</span>
 <span class="nc" id="L35">            Thread.currentThread().interrupt();</span>
         }
-<span class="nc" id="L37">    }</span>
+<span class="fc" id="L37">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
