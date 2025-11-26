@@ -105,13 +105,13 @@ python3 run.py
 #### Run the Test Suite:
 
 ```bash
-python3 -m unittest discover -s tests
+python3 -m unittest discover -s tests -v
 ```
 
 #### Check Code Coverage:
 
 ```bash
-python3 -m coverage run --source=src -m unittest discover -s tests
+python3 -m coverage run --source=src -m unittest discover -s tests -v
 python3 -m coverage report -m
 ```
 
