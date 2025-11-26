@@ -21,6 +21,10 @@ public class TestBlockingQueue {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        runTests();
+    }
+
+    public static boolean runTests() throws InterruptedException {
         System.out.println("==========================================");
         System.out.println("RUNNING COMPREHENSIVE UNIT TESTS");
         System.out.println("==========================================");
@@ -68,8 +72,7 @@ public class TestBlockingQueue {
         System.out.println("Total: " + passedCount + " Passed, " + failedCount + " Failed");
         System.out.println("==========================================");
 
-        // Force exit to ensure no lingering threads keep JVM alive
-        System.exit(failedCount > 0 ? 1 : 0);
+        return failedCount == 0;
     }
 
     // --- TEST METHOD 1: Invalid Inputs ---

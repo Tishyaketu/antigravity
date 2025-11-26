@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">producer-consumer-assignment</a> &gt; <a href="index.source.html" class="el_package">com.assessment.app</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">package com.assessment.app;
+
+import java.util.*;
+import com.assessment.core.SimpleBlockingQueue;
+import com.assessment.workers.Consumer;
+import com.assessment.workers.Producer;
+
+<span class="nc" id="L8">public class Main {</span>
+    public static void main(String[] args) {
+<span class="nc" id="L10">        Scanner scanner = new Scanner(System.in);</span>
+<span class="nc" id="L11">        Random random = new Random();</span>
+
+        // 1. Generate Random Source Data
+<span class="nc" id="L14">        Set&lt;Integer&gt; uniqueNumbers = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L15">        int randomLength = random.nextInt(15); // Length 0 to 14</span>
+
+<span class="nc" id="L17">        System.out.println(&quot;Generating &quot; + randomLength + &quot; unique items...&quot;);</span>
+
+<span class="nc bnc" id="L19" title="All 2 branches missed.">        while (uniqueNumbers.size() &lt; randomLength) {</span>
+<span class="nc" id="L20">            int num = random.nextInt(100) + 1; // 1-100</span>
+<span class="nc" id="L21">            uniqueNumbers.add(num);</span>
+        }
+
+<span class="nc" id="L24">        List&lt;Integer&gt; sourceContainer = new ArrayList&lt;&gt;(uniqueNumbers);</span>
+<span class="nc" id="L25">        Collections.shuffle(sourceContainer);</span>
+
+<span class="nc" id="L27">        System.out.println(&quot;=== Source Container Generated ===&quot;);</span>
+<span class="nc" id="L28">        System.out.println(sourceContainer);</span>
+<span class="nc" id="L29">        System.out.println(&quot;==================================&quot;);</span>
+
+        // 2. User Input for Capacity (CRITICAL VALIDATION ADDED)
+<span class="nc" id="L32">        int capacity = -1;</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        while (capacity &lt;= 0) {</span>
+<span class="nc" id="L34">            System.out.print(&quot;\nEnter Shared Queue Capacity (Positive Integer): &quot;);</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">            if (scanner.hasNextInt()) {</span>
+<span class="nc" id="L36">                capacity = scanner.nextInt();</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">                if (capacity &lt;= 0) {</span>
+<span class="nc" id="L38">                    System.out.println(&quot;&gt;&gt; Error: Queue cannot be non-existent! Enter 1 or greater.&quot;);</span>
+                }
+<span class="nc" id="L40">            } else {</span>
+<span class="nc" id="L41">                System.out.println(&quot;&gt;&gt; Error: Invalid input. Enter a positive integer number.&quot;);</span>
+<span class="nc" id="L42">                scanner.next(); // Clear invalid input</span>
+            }
+        }
+
+        // 3. Setup Components
+<span class="nc" id="L47">        SimpleBlockingQueue&lt;Integer&gt; sharedQueue = new SimpleBlockingQueue&lt;&gt;(capacity);</span>
+<span class="nc" id="L48">        List&lt;Integer&gt; destinationContainer = new ArrayList&lt;&gt;();</span>
+
+<span class="nc" id="L50">        Producer producer = new Producer(sharedQueue, sourceContainer);</span>
+<span class="nc" id="L51">        Consumer consumer = new Consumer(sharedQueue, destinationContainer);</span>
+
+<span class="nc" id="L53">        Thread pThread = new Thread(producer);</span>
+<span class="nc" id="L54">        Thread cThread = new Thread(consumer);</span>
+
+        // 4. Run Simulation
+<span class="nc" id="L57">        System.out.println(&quot;\n=== Starting Simulation ===&quot;);</span>
+
+<span class="nc" id="L59">        pThread.start();</span>
+<span class="nc" id="L60">        cThread.start();</span>
+
+        try {
+<span class="nc" id="L63">            pThread.join();</span>
+<span class="nc" id="L64">            cThread.join();</span>
+<span class="nc" id="L65">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L66">            e.printStackTrace();</span>
+        }
+
+        // 5. Final Verification
+<span class="nc" id="L70">        System.out.println(&quot;\n=== Simulation Complete ===&quot;);</span>
+<span class="nc" id="L71">        System.out.println(&quot;Source List:      &quot; + sourceContainer);</span>
+<span class="nc" id="L72">        System.out.println(&quot;Destination List: &quot; + destinationContainer);</span>
+
+        // Collections.sort(sourceContainer);
+        // Collections.sort(destinationContainer);
+
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (sourceContainer.equals(destinationContainer)) {</span>
+<span class="nc" id="L78">            System.out.println(&quot;SUCCESS: Data transfer perfectly matched!&quot;);</span>
+<span class="nc" id="L79">        } else {</span>
+<span class="nc" id="L80">            System.out.println(&quot;FAILURE: Data mismatch.&quot;);</span>
+        }
+
+<span class="nc" id="L83">        scanner.close();</span>
+<span class="nc" id="L84">    }</span>
+
+    public static boolean isValidCapacity(int capacity) {
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        return capacity &gt; 0;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
