@@ -15,24 +15,28 @@ class TestIngestion(unittest.TestCase):
 
     # --- Cleaning Tests ---
     def test_clean_currency_edge_cases(self):
+        """Verify currency cleaner handles None, non-strings, and valid formats."""
         self.assertEqual(clean_currency(None), 0.0)
         self.assertEqual(clean_currency(100), 0.0) # Not a string
         self.assertEqual(clean_currency("invalid"), 0.0)
         self.assertEqual(clean_currency("₹ 1,200.50 "), 1200.50)
 
     def test_clean_percentage(self):
+        """Verify percentage cleaner handles symbols and whitespace."""
         self.assertEqual(clean_percentage("50%"), 50.0)
         self.assertEqual(clean_percentage(" 12 % "), 12.0)
         self.assertEqual(clean_percentage(None), 0.0)
         self.assertEqual(clean_percentage("abc"), 0.0)
 
     def test_clean_count(self):
+        """Verify count cleaner handles commas and invalid inputs."""
         self.assertEqual(clean_count("1,000"), 1000)
         self.assertEqual(clean_count("500"), 500)
         self.assertEqual(clean_count(None), 0)
         self.assertEqual(clean_count("abc"), 0)
 
     def test_clean_rating_edge_cases(self):
+        """Verify rating cleaner handles pipe-separated metadata."""
         self.assertEqual(clean_rating(None), 0.0)
         self.assertEqual(clean_rating("invalid"), 0.0)
         # Test the split logic
@@ -41,6 +45,7 @@ class TestIngestion(unittest.TestCase):
     # --- Loader Tests ---
     @patch('os.path.exists')
     def test_loader_file_not_found(self, mock_exists):
+        """Ensure loader handles missing files gracefully (returns empty)."""
         mock_exists.return_value = False
         # Should return empty generator or handle error gracefully
         products = list(csv_reader("non_existent.csv"))
@@ -48,6 +53,10 @@ class TestIngestion(unittest.TestCase):
 
     @patch('os.path.exists')
     def test_loader_valid_file(self, mock_exists):
+        """
+        Test successful CSV loading using a mocked file system.
+        We use 'mock_open' to simulate reading a file without needing a real one on disk.
+        """
         mock_exists.return_value = True
         
         csv_data = (

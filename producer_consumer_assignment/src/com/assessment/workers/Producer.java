@@ -4,16 +4,18 @@ import java.util.List;
 import java.util.Random;
 import com.assessment.core.SimpleBlockingQueue;
 
+// The Producer task that generates data and puts it into the shared queue
 public class Producer implements Runnable {
     private final SimpleBlockingQueue<Integer> queue;
     private final List<Integer> sourceData;
-    private final Random random = new Random(); // Initialize Random
+    private final Random random = new Random();
 
     public Producer(SimpleBlockingQueue<Integer> queue, List<Integer> sourceData) {
         this.queue = queue;
         this.sourceData = sourceData;
     }
 
+    // The main execution logic for the producer thread
     @Override
     public void run() {
         try {
@@ -29,6 +31,7 @@ public class Producer implements Runnable {
             }
 
             System.out.println("[Producer] Work finished. Sending POISON PILL (-1)...");
+            // Send the "poison pill" (-1) to signal the consumer to stop
             queue.put(-1);
 
         } catch (InterruptedException e) {

@@ -3,7 +3,8 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class Product:
     """
-    Immutable representation of a Product.
+    Immutable data structure representing a single product in the sales stream.
+    Frozen to ensure data integrity during stream processing (functional style).
     """
     name: str
     category: str
@@ -15,4 +16,5 @@ class Product:
 
     @property
     def savings(self) -> float:
+        # Calculated property to derive the absolute monetary value saved
         return self.actual_price - self.discounted_price

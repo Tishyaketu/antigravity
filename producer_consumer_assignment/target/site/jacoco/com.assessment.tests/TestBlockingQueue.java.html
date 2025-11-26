@@ -9,265 +9,288 @@ import com.assessment.app.Main;
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 
-<span class="nc" id="L12">public class TestBlockingQueue {</span>
+// Custom test harness to verify the Producer-Consumer implementation.
+// We use this manual approach to have fine-grained control over thread states and assertions
+// which can be tricky with standard unit testing frameworks alone.
+<span class="nc" id="L15">public class TestBlockingQueue {</span>
 
     // Simple class to hold test results for the summary
     static class TestResult {
         String name;
         boolean passed;
 
-<span class="fc" id="L19">        TestResult(String name, boolean passed) {</span>
-<span class="fc" id="L20">            this.name = name;</span>
-<span class="fc" id="L21">            this.passed = passed;</span>
-<span class="fc" id="L22">        }</span>
+<span class="fc" id="L22">        TestResult(String name, boolean passed) {</span>
+<span class="fc" id="L23">            this.name = name;</span>
+<span class="fc" id="L24">            this.passed = passed;</span>
+<span class="fc" id="L25">        }</span>
     }
 
     public static void main(String[] args) throws InterruptedException {
-<span class="nc" id="L26">        runTests();</span>
-<span class="nc" id="L27">    }</span>
+<span class="nc" id="L29">        runTests();</span>
+<span class="nc" id="L30">    }</span>
 
+    // Orchestrates the execution of all unit and integration tests.
+    // Returns true only if ALL tests pass.
     public static boolean runTests() throws InterruptedException {
-<span class="fc" id="L30">        System.out.println(&quot;==========================================&quot;);</span>
-<span class="fc" id="L31">        System.out.println(&quot;RUNNING COMPREHENSIVE UNIT TESTS&quot;);</span>
-<span class="fc" id="L32">        System.out.println(&quot;==========================================&quot;);</span>
+<span class="fc" id="L35">        System.out.println(&quot;==========================================&quot;);</span>
+<span class="fc" id="L36">        System.out.println(&quot;RUNNING COMPREHENSIVE UNIT TESTS&quot;);</span>
+<span class="fc" id="L37">        System.out.println(&quot;==========================================&quot;);</span>
 
-<span class="fc" id="L34">        List&lt;TestResult&gt; results = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L39">        List&lt;TestResult&gt; results = new ArrayList&lt;&gt;();</span>
 
         // --- TEST 3.1: Input Validation ---
-<span class="fc" id="L37">        boolean valPass = testInputValidation();</span>
-<span class="fc" id="L38">        results.add(new TestResult(&quot;3.1 Input Validation&quot;, valPass));</span>
+<span class="fc" id="L42">        boolean valPass = testInputValidation();</span>
+<span class="fc" id="L43">        results.add(new TestResult(&quot;3.1 Input Validation&quot;, valPass));</span>
 
         // --- TEST 3.2 &amp; 3.3: Sync &amp; Concurrency ---
         // We use the Stress Test to prove both synchronization and concurrent execution
         // at once.
-<span class="fc" id="L43">        boolean concPass = testConcurrencyAndDataIntegrity();</span>
-<span class="fc" id="L44">        results.add(new TestResult(&quot;3.2 Thread Synchronization&quot;, concPass));</span>
-<span class="fc" id="L45">        results.add(new TestResult(&quot;3.3 Concurrent Programming&quot;, concPass));</span>
+<span class="fc" id="L48">        boolean concPass = testConcurrencyAndDataIntegrity();</span>
+<span class="fc" id="L49">        results.add(new TestResult(&quot;3.2 Thread Synchronization&quot;, concPass));</span>
+<span class="fc" id="L50">        results.add(new TestResult(&quot;3.3 Concurrent Programming&quot;, concPass));</span>
 
         // --- TEST 3.4 &amp; 3.5: Blocking &amp; Wait/Notify ---
         // The &quot;Blocking&quot; behavior physically proves the &quot;Wait/Notify&quot; mechanism works.
-<span class="fc" id="L49">        boolean prodBlockPass = testProducerBlocksWhenFull();</span>
-<span class="fc" id="L50">        results.add(new TestResult(&quot;3.4 Blocking Queues (Full)&quot;, prodBlockPass));</span>
+<span class="fc" id="L54">        boolean prodBlockPass = testProducerBlocksWhenFull();</span>
+<span class="fc" id="L55">        results.add(new TestResult(&quot;3.4 Blocking Queues (Full)&quot;, prodBlockPass));</span>
 
-<span class="fc" id="L52">        boolean consBlockPass = testConsumerBlocksWhenEmpty();</span>
-<span class="fc" id="L53">        results.add(new TestResult(&quot;3.5 Blocking Queues (Empty)&quot;, consBlockPass));</span>
+<span class="fc" id="L57">        boolean consBlockPass = testConsumerBlocksWhenEmpty();</span>
+<span class="fc" id="L58">        results.add(new TestResult(&quot;3.5 Blocking Queues (Empty)&quot;, consBlockPass));</span>
 
         // If blocking worked in both directions, the Wait/Notify mechanism is verified
-<span class="pc bpc" id="L56" title="2 of 4 branches missed.">        boolean waitNotifyPass = prodBlockPass &amp;&amp; consBlockPass;</span>
-<span class="fc" id="L57">        results.add(new TestResult(&quot;Mech: Wait/Notify Mechanism&quot;, waitNotifyPass));</span>
+<span class="pc bpc" id="L61" title="2 of 4 branches missed.">        boolean waitNotifyPass = prodBlockPass &amp;&amp; consBlockPass;</span>
+<span class="fc" id="L62">        results.add(new TestResult(&quot;Mech: Wait/Notify Mechanism&quot;, waitNotifyPass));</span>
 
         // --- TEST 4.0: Real Workers ---
-<span class="fc" id="L60">        boolean workersPass = testRealWorkerClasses();</span>
-<span class="fc" id="L61">        results.add(new TestResult(&quot;4.0 Real Worker Classes&quot;, workersPass));</span>
+<span class="fc" id="L65">        boolean workersPass = testRealWorkerClasses();</span>
+<span class="fc" id="L66">        results.add(new TestResult(&quot;4.0 Real Worker Classes&quot;, workersPass));</span>
 
         // --- TEST 5.0: Main App ---
-<span class="fc" id="L64">        boolean mainPass = testMainApp();</span>
-<span class="fc" id="L65">        results.add(new TestResult(&quot;5.0 Main App Entry&quot;, mainPass));</span>
+<span class="fc" id="L69">        boolean mainPass = testMainApp();</span>
+<span class="fc" id="L70">        results.add(new TestResult(&quot;5.0 Main App Entry&quot;, mainPass));</span>
 
         // Calculate totals
-<span class="fc" id="L68">        long passedCount = results.stream().filter(r -&gt; r.passed).count();</span>
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        long failedCount = results.stream().filter(r -&gt; !r.passed).count();</span>
+<span class="fc" id="L73">        long passedCount = results.stream().filter(r -&gt; r.passed).count();</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        long failedCount = results.stream().filter(r -&gt; !r.passed).count();</span>
 
-<span class="fc" id="L71">        System.out.println(&quot;\n==========================================&quot;);</span>
-<span class="fc" id="L72">        System.out.println(&quot;TEST SUMMARY&quot;);</span>
-<span class="fc" id="L73">        System.out.println(&quot;==========================================&quot;);</span>
+<span class="fc" id="L76">        System.out.println(&quot;\n==========================================&quot;);</span>
+<span class="fc" id="L77">        System.out.println(&quot;TEST SUMMARY&quot;);</span>
+<span class="fc" id="L78">        System.out.println(&quot;==========================================&quot;);</span>
 
-<span class="fc bfc" id="L75" title="All 2 branches covered.">        for (TestResult result : results) {</span>
-<span class="pc bpc" id="L76" title="1 of 2 branches missed.">            String status = result.passed ? &quot;[PASSED]&quot; : &quot;[FAILED]&quot;;</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        for (TestResult result : results) {</span>
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">            String status = result.passed ? &quot;[PASSED]&quot; : &quot;[FAILED]&quot;;</span>
             // Print neatly aligned
-<span class="fc" id="L78">            System.out.printf(&quot;%-8s %s%n&quot;, status, result.name);</span>
-<span class="fc" id="L79">        }</span>
+<span class="fc" id="L83">            System.out.printf(&quot;%-8s %s%n&quot;, status, result.name);</span>
+<span class="fc" id="L84">        }</span>
 
-<span class="fc" id="L81">        System.out.println(&quot;------------------------------------------&quot;);</span>
-<span class="fc" id="L82">        System.out.println(&quot;Total: &quot; + passedCount + &quot; Passed, &quot; + failedCount + &quot; Failed&quot;);</span>
-<span class="fc" id="L83">        System.out.println(&quot;==========================================&quot;);</span>
+<span class="fc" id="L86">        System.out.println(&quot;------------------------------------------&quot;);</span>
+<span class="fc" id="L87">        System.out.println(&quot;Total: &quot; + passedCount + &quot; Passed, &quot; + failedCount + &quot; Failed&quot;);</span>
+<span class="fc" id="L88">        System.out.println(&quot;==========================================&quot;);</span>
 
-<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        return failedCount == 0;</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        return failedCount == 0;</span>
     }
 
     // --- TEST METHOD 1: Invalid Inputs ---
+    // Verifies that the application correctly rejects invalid configuration (e.g.,
+    // negative capacity).
     public static boolean testInputValidation() {
-<span class="fc" id="L90">        System.out.print(&quot;[Test 3.1] Input Validation (Capacity &gt; 0)... &quot;);</span>
+<span class="fc" id="L97">        System.out.print(&quot;[Test 3.1] Input Validation (Capacity &gt; 0)... &quot;);</span>
 
-<span class="fc" id="L92">        boolean result = true;</span>
+<span class="fc" id="L99">        boolean result = true;</span>
         // Verify valid inputs pass
-<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if (!Main.isValidCapacity(5))</span>
-<span class="nc" id="L95">            result = false;</span>
-        // Verify invalid inputs fail
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (Main.isValidCapacity(0))</span>
-<span class="nc" id="L98">            result = false;</span>
-<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (Main.isValidCapacity(-5))</span>
-<span class="nc" id="L100">            result = false;</span>
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        if (!Main.isValidCapacity(5))</span>
+<span class="nc" id="L102">            result = false;</span>
+        // Verify invalid inputs fail (0 and negative numbers)
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">        if (Main.isValidCapacity(0))</span>
+<span class="nc" id="L105">            result = false;</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        if (Main.isValidCapacity(-5))</span>
+<span class="nc" id="L107">            result = false;</span>
 
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">        if (result)</span>
-<span class="fc" id="L103">            System.out.println(&quot;PASSED&quot;);</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        if (result)</span>
+<span class="fc" id="L110">            System.out.println(&quot;PASSED&quot;);</span>
         else
-<span class="nc" id="L105">            System.out.println(&quot;FAILED&quot;);</span>
-<span class="fc" id="L106">        return result;</span>
+<span class="nc" id="L112">            System.out.println(&quot;FAILED&quot;);</span>
+<span class="fc" id="L113">        return result;</span>
     }
 
-    // --- TEST METHOD 2 &amp; 3: Concurrency Stress &amp;Sync Test ---
+    // --- TEST METHOD 2 &amp; 3: Concurrency Stress &amp; Sync Test ---
+    // This is the most critical test. It uses a small buffer (capacity 2) to force
+    // frequent context switching between Producer and Consumer.
+    // If synchronization is broken, items will be lost or duplicated.
     public static boolean testConcurrencyAndDataIntegrity() throws InterruptedException {
-<span class="fc" id="L111">        System.out.print(&quot;[Test 3.2 &amp; 3.3] Concurrency &amp; Sync (Stress Test)... &quot;);</span>
+<span class="fc" id="L121">        System.out.print(&quot;[Test 3.2 &amp; 3.3] Concurrency &amp; Sync (Stress Test)... &quot;);</span>
 
         // Setup: Transfer 100 items with a tiny buffer (capacity 2)
         // This forces intense context switching.
-<span class="fc" id="L115">        int itemCount = 100;</span>
-<span class="fc" id="L116">        SimpleBlockingQueue&lt;Integer&gt; queue = new SimpleBlockingQueue&lt;&gt;(2);</span>
-<span class="fc" id="L117">        List&lt;Integer&gt; source = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L118" title="All 2 branches covered.">        for (int i = 0; i &lt; itemCount; i++)</span>
-<span class="fc" id="L119">            source.add(i);</span>
+<span class="fc" id="L125">        int itemCount = 100;</span>
+<span class="fc" id="L126">        SimpleBlockingQueue&lt;Integer&gt; queue = new SimpleBlockingQueue&lt;&gt;(2);</span>
+<span class="fc" id="L127">        List&lt;Integer&gt; source = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        for (int i = 0; i &lt; itemCount; i++)</span>
+<span class="fc" id="L129">            source.add(i);</span>
 
-<span class="fc" id="L121">        List&lt;Integer&gt; dest = Collections.synchronizedList(new ArrayList&lt;&gt;());</span>
+        // Destination list must be thread-safe for verification
+<span class="fc" id="L132">        List&lt;Integer&gt; dest = Collections.synchronizedList(new ArrayList&lt;&gt;());</span>
 
-<span class="fc" id="L123">        Thread producer = new Thread(() -&gt; {</span>
+<span class="fc" id="L134">        Thread producer = new Thread(() -&gt; {</span>
             try {
-<span class="fc bfc" id="L125" title="All 2 branches covered.">                for (Integer item : source)</span>
-<span class="fc" id="L126">                    queue.put(item);</span>
-<span class="fc" id="L127">                queue.put(-1); // Poison Pill</span>
-<span class="nc" id="L128">            } catch (InterruptedException e) {</span>
-<span class="fc" id="L129">            }</span>
-<span class="fc" id="L130">        });</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">                for (Integer item : source)</span>
+<span class="fc" id="L137">                    queue.put(item);</span>
+<span class="fc" id="L138">                queue.put(-1); // Poison Pill</span>
+<span class="nc" id="L139">            } catch (InterruptedException e) {</span>
+<span class="fc" id="L140">            }</span>
+<span class="fc" id="L141">        });</span>
 
-<span class="fc" id="L132">        Thread consumer = new Thread(() -&gt; {</span>
+<span class="fc" id="L143">        Thread consumer = new Thread(() -&gt; {</span>
             try {
                 while (true) {
-<span class="fc" id="L135">                    Integer item = queue.take();</span>
-<span class="fc bfc" id="L136" title="All 2 branches covered.">                    if (item == -1)</span>
-<span class="fc" id="L137">                        break;</span>
-<span class="fc" id="L138">                    dest.add(item);</span>
-<span class="fc" id="L139">                }</span>
-<span class="nc" id="L140">            } catch (InterruptedException e) {</span>
-<span class="fc" id="L141">            }</span>
-<span class="fc" id="L142">        });</span>
+<span class="fc" id="L146">                    Integer item = queue.take();</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">                    if (item == -1)</span>
+<span class="fc" id="L148">                        break;</span>
+<span class="fc" id="L149">                    dest.add(item);</span>
+<span class="fc" id="L150">                }</span>
+<span class="nc" id="L151">            } catch (InterruptedException e) {</span>
+<span class="fc" id="L152">            }</span>
+<span class="fc" id="L153">        });</span>
 
-<span class="fc" id="L144">        producer.setDaemon(true);</span>
-<span class="fc" id="L145">        consumer.setDaemon(true);</span>
+<span class="fc" id="L155">        producer.setDaemon(true);</span>
+<span class="fc" id="L156">        consumer.setDaemon(true);</span>
 
-<span class="fc" id="L147">        producer.start();</span>
-<span class="fc" id="L148">        consumer.start();</span>
+<span class="fc" id="L158">        producer.start();</span>
+<span class="fc" id="L159">        consumer.start();</span>
 
-<span class="fc" id="L150">        producer.join(2000);</span>
-<span class="fc" id="L151">        consumer.join(2000);</span>
+<span class="fc" id="L161">        producer.join(2000);</span>
+<span class="fc" id="L162">        consumer.join(2000);</span>
 
-<span class="pc bpc" id="L153" title="2 of 4 branches missed.">        if (dest.size() == itemCount &amp;&amp; dest.containsAll(source)) {</span>
-<span class="fc" id="L154">            System.out.println(&quot;PASSED (Transferred &quot; + dest.size() + &quot; items)&quot;);</span>
-<span class="fc" id="L155">            return true;</span>
+        // Verify that every single item was transferred correctly
+<span class="pc bpc" id="L165" title="2 of 4 branches missed.">        if (dest.size() == itemCount &amp;&amp; dest.containsAll(source)) {</span>
+<span class="fc" id="L166">            System.out.println(&quot;PASSED (Transferred &quot; + dest.size() + &quot; items)&quot;);</span>
+<span class="fc" id="L167">            return true;</span>
         } else {
-<span class="nc" id="L157">            System.out.println(&quot;FAILED (Source: &quot; + itemCount + &quot;, Dest: &quot; + dest.size() + &quot;)&quot;);</span>
-<span class="nc" id="L158">            return false;</span>
+<span class="nc" id="L169">            System.out.println(&quot;FAILED (Source: &quot; + itemCount + &quot;, Dest: &quot; + dest.size() + &quot;)&quot;);</span>
+<span class="nc" id="L170">            return false;</span>
         }
     }
 
     // --- TEST METHOD 4: Producer Blocking ---
+    // Verifies that the Producer correctly enters the WAITING state when the queue
+    // is full.
+    // This confirms that `lock.wait()` is being called.
     public static boolean testProducerBlocksWhenFull() throws InterruptedException {
-<span class="fc" id="L164">        System.out.print(&quot;[Test 3.4] Producer Blocks when Full... &quot;);</span>
+<span class="fc" id="L179">        System.out.print(&quot;[Test 3.4] Producer Blocks when Full... &quot;);</span>
 
-<span class="fc" id="L166">        SimpleBlockingQueue&lt;Integer&gt; queue = new SimpleBlockingQueue&lt;&gt;(1);</span>
-<span class="fc" id="L167">        queue.put(1); // Fill the queue</span>
+<span class="fc" id="L181">        SimpleBlockingQueue&lt;Integer&gt; queue = new SimpleBlockingQueue&lt;&gt;(1);</span>
+<span class="fc" id="L182">        queue.put(1); // Fill the queue</span>
 
-<span class="fc" id="L169">        Thread t = new Thread(() -&gt; {</span>
+<span class="fc" id="L184">        Thread t = new Thread(() -&gt; {</span>
             try {
-<span class="nc" id="L171">                queue.put(2); // Should block here</span>
-<span class="nc" id="L172">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L186">                queue.put(2); // Should block here because capacity is 1</span>
+<span class="nc" id="L187">            } catch (InterruptedException e) {</span>
                 // Expected interruption during exit
-<span class="nc" id="L174">            }</span>
-<span class="nc" id="L175">        });</span>
-<span class="fc" id="L176">        t.setDaemon(true);</span>
-<span class="fc" id="L177">        t.start();</span>
+<span class="nc" id="L189">            }</span>
+<span class="nc" id="L190">        });</span>
+<span class="fc" id="L191">        t.setDaemon(true);</span>
+<span class="fc" id="L192">        t.start();</span>
 
-<span class="fc" id="L179">        Thread.sleep(100); // Give it time to try and block</span>
+<span class="fc" id="L194">        Thread.sleep(100); // Give it time to try and block</span>
 
-<span class="pc bpc" id="L181" title="1 of 2 branches missed.">        if (t.getState() == Thread.State.WAITING) {</span>
-<span class="fc" id="L182">            System.out.println(&quot;PASSED (Thread State: WAITING)&quot;);</span>
-<span class="fc" id="L183">            return true;</span>
+        // Assert that the thread is physically waiting
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">        if (t.getState() == Thread.State.WAITING) {</span>
+<span class="fc" id="L198">            System.out.println(&quot;PASSED (Thread State: WAITING)&quot;);</span>
+<span class="fc" id="L199">            return true;</span>
         } else {
-<span class="nc" id="L185">            System.out.println(&quot;FAILED (Thread State: &quot; + t.getState() + &quot;)&quot;);</span>
-<span class="nc" id="L186">            return false;</span>
+<span class="nc" id="L201">            System.out.println(&quot;FAILED (Thread State: &quot; + t.getState() + &quot;)&quot;);</span>
+<span class="nc" id="L202">            return false;</span>
         }
     }
 
     // --- TEST METHOD 5: Consumer Blocking ---
+    // Verifies that the Consumer correctly enters the WAITING state when the queue
+    // is empty.
     public static boolean testConsumerBlocksWhenEmpty() throws InterruptedException {
-<span class="fc" id="L192">        System.out.print(&quot;[Test 3.5] Consumer Blocks when Empty... &quot;);</span>
+<span class="fc" id="L210">        System.out.print(&quot;[Test 3.5] Consumer Blocks when Empty... &quot;);</span>
 
-<span class="fc" id="L194">        SimpleBlockingQueue&lt;Integer&gt; queue = new SimpleBlockingQueue&lt;&gt;(1); // Empty</span>
+<span class="fc" id="L212">        SimpleBlockingQueue&lt;Integer&gt; queue = new SimpleBlockingQueue&lt;&gt;(1); // Empty</span>
 
-<span class="fc" id="L196">        Thread t = new Thread(() -&gt; {</span>
+<span class="fc" id="L214">        Thread t = new Thread(() -&gt; {</span>
             try {
-<span class="nc" id="L198">                queue.take(); // Should block here</span>
-<span class="nc" id="L199">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L216">                queue.take(); // Should block here because queue is empty</span>
+<span class="nc" id="L217">            } catch (InterruptedException e) {</span>
                 // Expected interruption during exit
-<span class="nc" id="L201">            }</span>
-<span class="nc" id="L202">        });</span>
-<span class="fc" id="L203">        t.setDaemon(true);</span>
-<span class="fc" id="L204">        t.start();</span>
+<span class="nc" id="L219">            }</span>
+<span class="nc" id="L220">        });</span>
+<span class="fc" id="L221">        t.setDaemon(true);</span>
+<span class="fc" id="L222">        t.start();</span>
 
-<span class="fc" id="L206">        Thread.sleep(100);</span>
+<span class="fc" id="L224">        Thread.sleep(100);</span>
 
-<span class="pc bpc" id="L208" title="1 of 2 branches missed.">        if (t.getState() == Thread.State.WAITING) {</span>
-<span class="fc" id="L209">            System.out.println(&quot;PASSED (Thread State: WAITING)&quot;);</span>
-<span class="fc" id="L210">            return true;</span>
+        // Assert that the thread is physically waiting
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">        if (t.getState() == Thread.State.WAITING) {</span>
+<span class="fc" id="L228">            System.out.println(&quot;PASSED (Thread State: WAITING)&quot;);</span>
+<span class="fc" id="L229">            return true;</span>
         } else {
-<span class="nc" id="L212">            System.out.println(&quot;FAILED (Thread State: &quot; + t.getState() + &quot;)&quot;);</span>
-<span class="nc" id="L213">            return false;</span>
+<span class="nc" id="L231">            System.out.println(&quot;FAILED (Thread State: &quot; + t.getState() + &quot;)&quot;);</span>
+<span class="nc" id="L232">            return false;</span>
         }
     }
 
     // --- TEST METHOD 6: Real Worker Classes ---
+    // Integration test using the actual Producer and Consumer classes to ensure
+    // they work together.
     public static boolean testRealWorkerClasses() throws InterruptedException {
-<span class="fc" id="L219">        System.out.print(&quot;[Test 4.0] Real Producer/Consumer Classes... &quot;);</span>
+<span class="fc" id="L240">        System.out.print(&quot;[Test 4.0] Real Producer/Consumer Classes... &quot;);</span>
 
-<span class="fc" id="L221">        List&lt;Integer&gt; source = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L222">        source.add(100);</span>
-<span class="fc" id="L223">        source.add(200);</span>
-<span class="fc" id="L224">        source.add(300);</span>
+<span class="fc" id="L242">        List&lt;Integer&gt; source = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L243">        source.add(100);</span>
+<span class="fc" id="L244">        source.add(200);</span>
+<span class="fc" id="L245">        source.add(300);</span>
 
-<span class="fc" id="L226">        List&lt;Integer&gt; dest = Collections.synchronizedList(new ArrayList&lt;&gt;());</span>
-<span class="fc" id="L227">        SimpleBlockingQueue&lt;Integer&gt; queue = new SimpleBlockingQueue&lt;&gt;(2);</span>
+<span class="fc" id="L247">        List&lt;Integer&gt; dest = Collections.synchronizedList(new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L248">        SimpleBlockingQueue&lt;Integer&gt; queue = new SimpleBlockingQueue&lt;&gt;(2);</span>
 
-<span class="fc" id="L229">        com.assessment.workers.Producer producer = new com.assessment.workers.Producer(queue, source);</span>
-<span class="fc" id="L230">        com.assessment.workers.Consumer consumer = new com.assessment.workers.Consumer(queue, dest);</span>
+<span class="fc" id="L250">        com.assessment.workers.Producer producer = new com.assessment.workers.Producer(queue, source);</span>
+<span class="fc" id="L251">        com.assessment.workers.Consumer consumer = new com.assessment.workers.Consumer(queue, dest);</span>
 
-<span class="fc" id="L232">        Thread pThread = new Thread(producer);</span>
-<span class="fc" id="L233">        Thread cThread = new Thread(consumer);</span>
+<span class="fc" id="L253">        Thread pThread = new Thread(producer);</span>
+<span class="fc" id="L254">        Thread cThread = new Thread(consumer);</span>
 
-<span class="fc" id="L235">        pThread.start();</span>
-<span class="fc" id="L236">        cThread.start();</span>
+<span class="fc" id="L256">        pThread.start();</span>
+<span class="fc" id="L257">        cThread.start();</span>
 
-<span class="fc" id="L238">        pThread.join(5000);</span>
-<span class="fc" id="L239">        cThread.join(5000);</span>
+<span class="fc" id="L259">        pThread.join(5000);</span>
+<span class="fc" id="L260">        cThread.join(5000);</span>
 
-<span class="pc bpc" id="L241" title="1 of 2 branches missed.">        if (dest.equals(source)) {</span>
-<span class="fc" id="L242">            System.out.println(&quot;PASSED&quot;);</span>
-<span class="fc" id="L243">            return true;</span>
+<span class="pc bpc" id="L262" title="1 of 2 branches missed.">        if (dest.equals(source)) {</span>
+<span class="fc" id="L263">            System.out.println(&quot;PASSED&quot;);</span>
+<span class="fc" id="L264">            return true;</span>
         } else {
-<span class="nc" id="L245">            System.out.println(&quot;FAILED (Dest: &quot; + dest + &quot;)&quot;);</span>
-<span class="nc" id="L246">            return false;</span>
+<span class="nc" id="L266">            System.out.println(&quot;FAILED (Dest: &quot; + dest + &quot;)&quot;);</span>
+<span class="nc" id="L267">            return false;</span>
         }
     }
 
     // --- TEST METHOD 7: Main Application Entry Point ---
+    // Simulates user input to verify the entire application flow via the Main
+    // class.
     public static boolean testMainApp() {
-<span class="fc" id="L252">        System.out.print(&quot;[Test 5.0] Main App Execution... &quot;);</span>
+<span class="fc" id="L275">        System.out.print(&quot;[Test 5.0] Main App Execution... &quot;);</span>
 
-<span class="fc" id="L254">        InputStream originalIn = System.in;</span>
+<span class="fc" id="L277">        InputStream originalIn = System.in;</span>
         try {
             // Simulate user typing &quot;5&quot; for capacity
-<span class="fc" id="L257">            String input = &quot;5\n&quot;;</span>
-<span class="fc" id="L258">            System.setIn(new java.io.ByteArrayInputStream(input.getBytes()));</span>
+<span class="fc" id="L280">            String input = &quot;5\n&quot;;</span>
+<span class="fc" id="L281">            System.setIn(new java.io.ByteArrayInputStream(input.getBytes()));</span>
 
             // Run Main
-<span class="fc" id="L261">            Main.main(new String[] {});</span>
+<span class="fc" id="L284">            Main.main(new String[] {});</span>
 
-<span class="fc" id="L263">            System.out.println(&quot;PASSED&quot;);</span>
-<span class="fc" id="L264">            return true;</span>
-<span class="nc" id="L265">        } catch (Exception e) {</span>
-<span class="nc" id="L266">            System.out.println(&quot;FAILED (&quot; + e.getMessage() + &quot;)&quot;);</span>
-<span class="nc" id="L267">            e.printStackTrace();</span>
-<span class="nc" id="L268">            return false;</span>
+<span class="fc" id="L286">            System.out.println(&quot;PASSED&quot;);</span>
+<span class="fc" id="L287">            return true;</span>
+<span class="nc" id="L288">        } catch (Exception e) {</span>
+<span class="nc" id="L289">            System.out.println(&quot;FAILED (&quot; + e.getMessage() + &quot;)&quot;);</span>
+<span class="nc" id="L290">            e.printStackTrace();</span>
+<span class="nc" id="L291">            return false;</span>
         } finally {
-<span class="fc" id="L270">            System.setIn(originalIn);</span>
+<span class="fc" id="L293">            System.setIn(originalIn);</span>
         }
     }
 }

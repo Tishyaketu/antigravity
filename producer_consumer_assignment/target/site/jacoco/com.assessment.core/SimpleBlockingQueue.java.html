@@ -3,43 +3,54 @@
 import java.util.LinkedList;
 import java.util.Queue;
 
+// A custom thread-safe queue implementation using a monitor lock (synchronized/wait/notify)
 public class SimpleBlockingQueue&lt;T&gt; {
-<span class="fc" id="L7">    private final Queue&lt;T&gt; queue = new LinkedList&lt;&gt;();</span>
+<span class="fc" id="L8">    private final Queue&lt;T&gt; queue = new LinkedList&lt;&gt;();</span>
     private final int capacity;
-<span class="fc" id="L9">    private final Object lock = new Object();</span>
+<span class="fc" id="L10">    private final Object lock = new Object();</span>
 
-<span class="fc" id="L11">    public SimpleBlockingQueue(int capacity) {</span>
-<span class="fc" id="L12">        this.capacity = capacity;</span>
-<span class="fc" id="L13">    }</span>
+<span class="fc" id="L12">    public SimpleBlockingQueue(int capacity) {</span>
+<span class="fc" id="L13">        this.capacity = capacity;</span>
+<span class="fc" id="L14">    }</span>
 
+    // Method to add an item to the queue (Producer calls this)
     public void put(T item) throws InterruptedException {
-<span class="fc" id="L16">        synchronized (lock) {</span>
-<span class="fc bfc" id="L17" title="All 2 branches covered.">            while (queue.size() == capacity) {</span>
-<span class="fc" id="L18">                System.out.println(&quot;\t[Queue] FULL (&quot; + queue.size() + &quot;/&quot; + capacity + &quot;). Producer waiting...&quot;);</span>
-<span class="fc" id="L19">                lock.wait();</span>
+<span class="fc" id="L18">        synchronized (lock) {</span>
+            // Check if the queue is full. Use a while loop to handle spurious wakeups.
+<span class="fc bfc" id="L20" title="All 2 branches covered.">            while (queue.size() == capacity) {</span>
+<span class="fc" id="L21">                System.out.println(&quot;\t[Queue] FULL (&quot; + queue.size() + &quot;/&quot; + capacity + &quot;). Producer waiting...&quot;);</span>
+                // Release the lock and wait until notified by the consumer
+<span class="fc" id="L23">                lock.wait();</span>
             }
 
-<span class="fc" id="L22">            queue.add(item);</span>
+<span class="fc" id="L26">            queue.add(item);</span>
             // VISUALIZATION UPDATE:
-<span class="fc" id="L24">            System.out.println(&quot;Produced: &quot; + item + &quot; | Queue State: &quot; + queue + &quot; (Size: &quot; + queue.size() + &quot;)&quot;);</span>
+<span class="fc" id="L28">            System.out.println(&quot;Produced: &quot; + item + &quot; | Queue State: &quot; + queue + &quot; (Size: &quot; + queue.size() + &quot;)&quot;);</span>
 
-<span class="fc" id="L26">            lock.notifyAll();</span>
-        }
-<span class="fc" id="L28">    }</span>
+            // Notify all waiting threads (specifically the consumer) that the queue is no
+            // longer empty
+<span class="fc" id="L32">            lock.notifyAll();</span>
+<span class="fc" id="L33">        }</span>
+<span class="fc" id="L34">    }</span>
 
+    // Method to remove and return an item from the queue (Consumer calls this)
     public T take() throws InterruptedException {
-<span class="fc" id="L31">        synchronized (lock) {</span>
-<span class="fc bfc" id="L32" title="All 2 branches covered.">            while (queue.isEmpty()) {</span>
-<span class="fc" id="L33">                System.out.println(&quot;\t[Queue] EMPTY (0/&quot; + capacity + &quot;). Consumer waiting...&quot;);</span>
-<span class="fc" id="L34">                lock.wait();</span>
+<span class="fc" id="L38">        synchronized (lock) {</span>
+            // Check if the queue is empty. Use a while loop to handle spurious wakeups.
+<span class="fc bfc" id="L40" title="All 2 branches covered.">            while (queue.isEmpty()) {</span>
+<span class="fc" id="L41">                System.out.println(&quot;\t[Queue] EMPTY (0/&quot; + capacity + &quot;). Consumer waiting...&quot;);</span>
+                // Release the lock and wait until notified by the producer
+<span class="fc" id="L43">                lock.wait();</span>
             }
 
-<span class="fc" id="L37">            T item = queue.remove();</span>
+<span class="fc" id="L46">            T item = queue.remove();</span>
             // VISUALIZATION UPDATE:
-<span class="fc" id="L39">            System.out.println(&quot;Consumed: &quot; + item + &quot; | Queue State: &quot; + queue + &quot; (Size: &quot; + queue.size() + &quot;)&quot;);</span>
+<span class="fc" id="L48">            System.out.println(&quot;Consumed: &quot; + item + &quot; | Queue State: &quot; + queue + &quot; (Size: &quot; + queue.size() + &quot;)&quot;);</span>
 
-<span class="fc" id="L41">            lock.notifyAll();</span>
-<span class="fc" id="L42">            return item;</span>
+            // Notify all waiting threads (specifically the producer) that the queue is no
+            // longer full
+<span class="fc" id="L52">            lock.notifyAll();</span>
+<span class="fc" id="L53">            return item;</span>
         }
     }
 }

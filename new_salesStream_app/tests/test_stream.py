@@ -98,6 +98,7 @@ class TestStreamProcessor(unittest.TestCase):
         """
         Simulate a real business query: 
         'Find unique Electronics products sorted by price'
+        Verifies that multiple stream operations can be chained correctly.
         """
         result = self.stream \
             .filter(lambda p: p.category == "Electronics") \

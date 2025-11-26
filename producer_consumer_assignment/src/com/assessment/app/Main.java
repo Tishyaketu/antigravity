@@ -5,6 +5,7 @@ import com.assessment.core.SimpleBlockingQueue;
 import com.assessment.workers.Consumer;
 import com.assessment.workers.Producer;
 
+// Main entry point for the Producer-Consumer simulation application
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -16,6 +17,7 @@ public class Main {
 
         System.out.println("Generating " + randomLength + " unique items...");
 
+        // Generate unique numbers until we reach the desired length
         while (uniqueNumbers.size() < randomLength) {
             int num = random.nextInt(100) + 1; // 1-100
             uniqueNumbers.add(num);
@@ -71,6 +73,8 @@ public class Main {
         System.out.println("Source List:      " + sourceContainer);
         System.out.println("Destination List: " + destinationContainer);
 
+        // Optional: Sort lists if order didn't matter, but here we expect exact
+        // transfer
         // Collections.sort(sourceContainer);
         // Collections.sort(destinationContainer);
 
@@ -83,6 +87,7 @@ public class Main {
         scanner.close();
     }
 
+    // Helper method to validate capacity (used for unit testing logic)
     public static boolean isValidCapacity(int capacity) {
         return capacity > 0;
     }

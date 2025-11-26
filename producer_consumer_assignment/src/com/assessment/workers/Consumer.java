@@ -4,19 +4,22 @@ import java.util.List;
 import java.util.Random;
 import com.assessment.core.SimpleBlockingQueue;
 
+// The Consumer task that takes data from the shared queue and processes it
 public class Consumer implements Runnable {
     private final SimpleBlockingQueue<Integer> queue;
     private final List<Integer> destinationList;
-    private final Random random = new Random(); // Initialize Random
+    private final Random random = new Random();
 
     public Consumer(SimpleBlockingQueue<Integer> queue, List<Integer> destinationList) {
         this.queue = queue;
         this.destinationList = destinationList;
     }
 
+    // The main execution logic for the consumer thread
     @Override
     public void run() {
         try {
+            // Infinite loop to continuously consume items until the poison pill is found
             while (true) {
                 // DYNAMIC SPEED: Random sleep between 100ms and 800ms
                 // Placed at the start to vary the "pickup" time
@@ -25,6 +28,7 @@ public class Consumer implements Runnable {
 
                 Integer item = queue.take();
 
+                // Check if the retrieved item is the "poison pill" (-1)
                 if (item == -1) {
                     System.out.println("[Consumer] Caught POISON PILL. Stopping...");
                     break;

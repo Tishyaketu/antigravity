@@ -1,14 +1,20 @@
 def clean_currency(value):
-    """Parses '₹1,099' -> 1099.0"""
+    """
+    Robustly parses currency strings (e.g., '₹1,099') into floats.
+    Handles missing values, currency symbols, and commas.
+    """
     if not value or not isinstance(value, str):
         return 0.0
     try:
+        # Remove symbol and commas to get raw number string
         return float(value.replace('₹', '').replace(',', '').strip())
     except ValueError:
         return 0.0
 
 def clean_percentage(value):
-    """Parses '64%' -> 64.0"""
+    """
+    Parses percentage strings (e.g., '64%') into floats.
+    """
     if not value or not isinstance(value, str):
         return 0.0
     try:
@@ -17,16 +23,22 @@ def clean_percentage(value):
         return 0.0
 
 def clean_rating(value):
-    """Parses '4.5|...' -> 4.5"""
+    """
+    Parses rating strings which might contain extra metadata (e.g., '4.5|...').
+    Extracts the primary numeric rating.
+    """
     if not value:
         return 0.0
     try:
+        # Split by pipe to handle cases where rating has appended text
         return float(str(value).split('|')[0].strip())
     except (ValueError, AttributeError):
         return 0.0
 
 def clean_count(value):
-    """Parses '24,269' -> 24269"""
+    """
+    Parses count strings with commas (e.g., '24,269') into integers.
+    """
     if not value: 
         return 0
     try:

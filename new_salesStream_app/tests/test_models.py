@@ -8,6 +8,10 @@ from sales_analysis.core.models import Product
 
 class TestModels(unittest.TestCase):
     def test_product_savings(self):
+        """
+        Verifies that the calculated property 'savings' correctly computes
+        the difference between actual and discounted price.
+        """
         p = Product(
             name="Test", category="Test", 
             discounted_price=80.0, actual_price=100.0, 

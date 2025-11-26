@@ -4,39 +4,43 @@ import java.util.List;
 import java.util.Random;
 import com.assessment.core.SimpleBlockingQueue;
 
+// The Consumer task that takes data from the shared queue and processes it
 public class Consumer implements Runnable {
     private final SimpleBlockingQueue&lt;Integer&gt; queue;
     private final List&lt;Integer&gt; destinationList;
-<span class="fc" id="L10">    private final Random random = new Random(); // Initialize Random</span>
+<span class="fc" id="L11">    private final Random random = new Random();</span>
 
-<span class="fc" id="L12">    public Consumer(SimpleBlockingQueue&lt;Integer&gt; queue, List&lt;Integer&gt; destinationList) {</span>
-<span class="fc" id="L13">        this.queue = queue;</span>
-<span class="fc" id="L14">        this.destinationList = destinationList;</span>
-<span class="fc" id="L15">    }</span>
+<span class="fc" id="L13">    public Consumer(SimpleBlockingQueue&lt;Integer&gt; queue, List&lt;Integer&gt; destinationList) {</span>
+<span class="fc" id="L14">        this.queue = queue;</span>
+<span class="fc" id="L15">        this.destinationList = destinationList;</span>
+<span class="fc" id="L16">    }</span>
 
+    // The main execution logic for the consumer thread
     @Override
     public void run() {
         try {
-<span class="fc" id="L20">            while (true) {</span>
+            // Infinite loop to continuously consume items until the poison pill is found
+            while (true) {
                 // DYNAMIC SPEED: Random sleep between 100ms and 800ms
                 // Placed at the start to vary the &quot;pickup&quot; time
-<span class="fc" id="L23">                int delay = 100 + random.nextInt(700);</span>
-<span class="fc" id="L24">                Thread.sleep(delay);</span>
+<span class="fc" id="L26">                int delay = 100 + random.nextInt(700);</span>
+<span class="fc" id="L27">                Thread.sleep(delay);</span>
 
-<span class="fc" id="L26">                Integer item = queue.take();</span>
+<span class="fc" id="L29">                Integer item = queue.take();</span>
 
-<span class="fc bfc" id="L28" title="All 2 branches covered.">                if (item == -1) {</span>
-<span class="fc" id="L29">                    System.out.println(&quot;[Consumer] Caught POISON PILL. Stopping...&quot;);</span>
-<span class="fc" id="L30">                    break;</span>
+                // Check if the retrieved item is the &quot;poison pill&quot; (-1)
+<span class="fc bfc" id="L32" title="All 2 branches covered.">                if (item == -1) {</span>
+<span class="fc" id="L33">                    System.out.println(&quot;[Consumer] Caught POISON PILL. Stopping...&quot;);</span>
+<span class="fc" id="L34">                    break;</span>
                 }
 
-<span class="fc" id="L33">                destinationList.add(item);</span>
-<span class="fc" id="L34">                System.out.println(&quot;\t[Destination] Added &quot; + item + &quot; | Current Dest: &quot; + destinationList + &quot; (Size: &quot;</span>
-<span class="fc" id="L35">                        + destinationList.size() + &quot;)&quot;);</span>
-            }
-<span class="nc" id="L37">        } catch (InterruptedException e) {</span>
-<span class="nc" id="L38">            Thread.currentThread().interrupt();</span>
-        }
-<span class="fc" id="L40">    }</span>
+<span class="fc" id="L37">                destinationList.add(item);</span>
+<span class="fc" id="L38">                System.out.println(&quot;\t[Destination] Added &quot; + item + &quot; | Current Dest: &quot; + destinationList + &quot; (Size: &quot;</span>
+<span class="fc" id="L39">                        + destinationList.size() + &quot;)&quot;);</span>
+<span class="fc" id="L40">            }</span>
+<span class="nc" id="L41">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L42">            Thread.currentThread().interrupt();</span>
+<span class="fc" id="L43">        }</span>
+<span class="fc" id="L44">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

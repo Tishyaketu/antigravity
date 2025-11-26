@@ -9,6 +9,9 @@ import com.assessment.app.Main;
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 
+// Custom test harness to verify the Producer-Consumer implementation.
+// We use this manual approach to have fine-grained control over thread states and assertions
+// which can be tricky with standard unit testing frameworks alone.
 public class TestBlockingQueue {
 
     // Simple class to hold test results for the summary
@@ -26,6 +29,8 @@ public class TestBlockingQueue {
         runTests();
     }
 
+    // Orchestrates the execution of all unit and integration tests.
+    // Returns true only if ALL tests pass.
     public static boolean runTests() throws InterruptedException {
         System.out.println("==========================================");
         System.out.println("RUNNING COMPREHENSIVE UNIT TESTS");
@@ -86,6 +91,8 @@ public class TestBlockingQueue {
     }
 
     // --- TEST METHOD 1: Invalid Inputs ---
+    // Verifies that the application correctly rejects invalid configuration (e.g.,
+    // negative capacity).
     public static boolean testInputValidation() {
         System.out.print("[Test 3.1] Input Validation (Capacity > 0)... ");
 
@@ -93,7 +100,7 @@ public class TestBlockingQueue {
         // Verify valid inputs pass
         if (!Main.isValidCapacity(5))
             result = false;
-        // Verify invalid inputs fail
+        // Verify invalid inputs fail (0 and negative numbers)
         if (Main.isValidCapacity(0))
             result = false;
         if (Main.isValidCapacity(-5))
@@ -106,7 +113,10 @@ public class TestBlockingQueue {
         return result;
     }
 
-    // --- TEST METHOD 2 & 3: Concurrency Stress &Sync Test ---
+    // --- TEST METHOD 2 & 3: Concurrency Stress & Sync Test ---
+    // This is the most critical test. It uses a small buffer (capacity 2) to force
+    // frequent context switching between Producer and Consumer.
+    // If synchronization is broken, items will be lost or duplicated.
     public static boolean testConcurrencyAndDataIntegrity() throws InterruptedException {
         System.out.print("[Test 3.2 & 3.3] Concurrency & Sync (Stress Test)... ");
 
@@ -118,6 +128,7 @@ public class TestBlockingQueue {
         for (int i = 0; i < itemCount; i++)
             source.add(i);
 
+        // Destination list must be thread-safe for verification
         List<Integer> dest = Collections.synchronizedList(new ArrayList<>());
 
         Thread producer = new Thread(() -> {
@@ -150,6 +161,7 @@ public class TestBlockingQueue {
         producer.join(2000);
         consumer.join(2000);
 
+        // Verify that every single item was transferred correctly
         if (dest.size() == itemCount && dest.containsAll(source)) {
             System.out.println("PASSED (Transferred " + dest.size() + " items)");
             return true;
@@ -160,6 +172,9 @@ public class TestBlockingQueue {
     }
 
     // --- TEST METHOD 4: Producer Blocking ---
+    // Verifies that the Producer correctly enters the WAITING state when the queue
+    // is full.
+    // This confirms that `lock.wait()` is being called.
     public static boolean testProducerBlocksWhenFull() throws InterruptedException {
         System.out.print("[Test 3.4] Producer Blocks when Full... ");
 
@@ -168,7 +183,7 @@ public class TestBlockingQueue {
 
         Thread t = new Thread(() -> {
             try {
-                queue.put(2); // Should block here
+                queue.put(2); // Should block here because capacity is 1
             } catch (InterruptedException e) {
                 // Expected interruption during exit
             }
@@ -178,6 +193,7 @@ public class TestBlockingQueue {
 
         Thread.sleep(100); // Give it time to try and block
 
+        // Assert that the thread is physically waiting
         if (t.getState() == Thread.State.WAITING) {
             System.out.println("PASSED (Thread State: WAITING)");
             return true;
@@ -188,6 +204,8 @@ public class TestBlockingQueue {
     }
 
     // --- TEST METHOD 5: Consumer Blocking ---
+    // Verifies that the Consumer correctly enters the WAITING state when the queue
+    // is empty.
     public static boolean testConsumerBlocksWhenEmpty() throws InterruptedException {
         System.out.print("[Test 3.5] Consumer Blocks when Empty... ");
 
@@ -195,7 +213,7 @@ public class TestBlockingQueue {
 
         Thread t = new Thread(() -> {
             try {
-                queue.take(); // Should block here
+                queue.take(); // Should block here because queue is empty
             } catch (InterruptedException e) {
                 // Expected interruption during exit
             }
@@ -205,6 +223,7 @@ public class TestBlockingQueue {
 
         Thread.sleep(100);
 
+        // Assert that the thread is physically waiting
         if (t.getState() == Thread.State.WAITING) {
             System.out.println("PASSED (Thread State: WAITING)");
             return true;
@@ -215,6 +234,8 @@ public class TestBlockingQueue {
     }
 
     // --- TEST METHOD 6: Real Worker Classes ---
+    // Integration test using the actual Producer and Consumer classes to ensure
+    // they work together.
     public static boolean testRealWorkerClasses() throws InterruptedException {
         System.out.print("[Test 4.0] Real Producer/Consumer Classes... ");
 
@@ -248,6 +269,8 @@ public class TestBlockingQueue {
     }
 
     // --- TEST METHOD 7: Main Application Entry Point ---
+    // Simulates user input to verify the entire application flow via the Main
+    // class.
     public static boolean testMainApp() {
         System.out.print("[Test 5.0] Main App Execution... ");
 

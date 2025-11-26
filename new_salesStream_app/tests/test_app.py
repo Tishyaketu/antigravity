@@ -13,6 +13,10 @@ class TestApp(unittest.TestCase):
     
     @patch('sales_analysis.app.csv_reader')
     def test_main_application_flow(self, mock_reader):
+        """
+        Integration Test: Verifies the entire application pipeline from start to finish.
+        Mocks the CSV input to avoid file I/O and captures stdout to verify the report generation.
+        """
         # Mock the data source so we don't need a real file
         mock_data = [
             Product("P1", "Cat1", 100.0, 200.0, 50.0, 4.8, 1500),
@@ -20,6 +24,7 @@ class TestApp(unittest.TestCase):
             Product("P3", "Cat2", 20.0, 40.0, 50.0, 4.9, 2000),
         ]
         # Use side_effect to return a FRESH iterator every time it's called
+        # This is critical because the app calls get_stream() multiple times
         mock_reader.side_effect = lambda _: iter(mock_data)
 
         # Capture stdout to verify output
