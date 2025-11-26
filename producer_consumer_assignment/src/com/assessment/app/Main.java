@@ -38,7 +38,7 @@ public class Main {
                     System.out.println(">> Error: Queue cannot be non-existent! Enter 1 or greater.");
                 }
             } else {
-                System.out.println(">> Error: Invalid input. Enter a number.");
+                System.out.println(">> Error: Invalid input. Enter a positive integer number.");
                 scanner.next(); // Clear invalid input
             }
         }
@@ -55,7 +55,6 @@ public class Main {
 
         // 4. Run Simulation
         System.out.println("\n=== Starting Simulation ===");
-        long startTime = System.currentTimeMillis();
 
         pThread.start();
         cThread.start();
@@ -67,15 +66,13 @@ public class Main {
             e.printStackTrace();
         }
 
-        long endTime = System.currentTimeMillis();
-
         // 5. Final Verification
         System.out.println("\n=== Simulation Complete ===");
         System.out.println("Source List:      " + sourceContainer);
         System.out.println("Destination List: " + destinationContainer);
 
-        Collections.sort(sourceContainer);
-        Collections.sort(destinationContainer);
+        // Collections.sort(sourceContainer);
+        // Collections.sort(destinationContainer);
 
         if (sourceContainer.equals(destinationContainer)) {
             System.out.println("SUCCESS: Data transfer perfectly matched!");

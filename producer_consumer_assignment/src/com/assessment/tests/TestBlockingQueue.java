@@ -93,62 +93,7 @@ public class TestBlockingQueue {
         return result;
     }
 
-    // --- TEST METHOD 2: Producer Blocking ---
-    public static boolean testProducerBlocksWhenFull() throws InterruptedException {
-        System.out.print("[Test 3.4] Producer Blocks when Full... ");
-
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(1);
-        queue.put(1); // Fill the queue
-
-        Thread t = new Thread(() -> {
-            try {
-                queue.put(2); // Should block here
-            } catch (InterruptedException e) {
-                // Expected interruption during exit
-            }
-        });
-        t.setDaemon(true);
-        t.start();
-
-        Thread.sleep(100); // Give it time to try and block
-
-        if (t.getState() == Thread.State.WAITING) {
-            System.out.println("PASSED (Thread State: WAITING)");
-            return true;
-        } else {
-            System.out.println("FAILED (Thread State: " + t.getState() + ")");
-            return false;
-        }
-    }
-
-    // --- TEST METHOD 3: Consumer Blocking ---
-    public static boolean testConsumerBlocksWhenEmpty() throws InterruptedException {
-        System.out.print("[Test 3.5] Consumer Blocks when Empty... ");
-
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(1); // Empty
-
-        Thread t = new Thread(() -> {
-            try {
-                queue.take(); // Should block here
-            } catch (InterruptedException e) {
-                // Expected interruption during exit
-            }
-        });
-        t.setDaemon(true);
-        t.start();
-
-        Thread.sleep(100);
-
-        if (t.getState() == Thread.State.WAITING) {
-            System.out.println("PASSED (Thread State: WAITING)");
-            return true;
-        } else {
-            System.out.println("FAILED (Thread State: " + t.getState() + ")");
-            return false;
-        }
-    }
-
-    // --- TEST METHOD 4: Concurrency Stress Test ---
+    // --- TEST METHOD 2 & 3: Concurrency Stress &Sync Test ---
     public static boolean testConcurrencyAndDataIntegrity() throws InterruptedException {
         System.out.print("[Test 3.2 & 3.3] Concurrency & Sync (Stress Test)... ");
 
@@ -197,6 +142,61 @@ public class TestBlockingQueue {
             return true;
         } else {
             System.out.println("FAILED (Source: " + itemCount + ", Dest: " + dest.size() + ")");
+            return false;
+        }
+    }
+
+    // --- TEST METHOD 4: Producer Blocking ---
+    public static boolean testProducerBlocksWhenFull() throws InterruptedException {
+        System.out.print("[Test 3.4] Producer Blocks when Full... ");
+
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(1);
+        queue.put(1); // Fill the queue
+
+        Thread t = new Thread(() -> {
+            try {
+                queue.put(2); // Should block here
+            } catch (InterruptedException e) {
+                // Expected interruption during exit
+            }
+        });
+        t.setDaemon(true);
+        t.start();
+
+        Thread.sleep(100); // Give it time to try and block
+
+        if (t.getState() == Thread.State.WAITING) {
+            System.out.println("PASSED (Thread State: WAITING)");
+            return true;
+        } else {
+            System.out.println("FAILED (Thread State: " + t.getState() + ")");
+            return false;
+        }
+    }
+
+    // --- TEST METHOD 5: Consumer Blocking ---
+    public static boolean testConsumerBlocksWhenEmpty() throws InterruptedException {
+        System.out.print("[Test 3.5] Consumer Blocks when Empty... ");
+
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(1); // Empty
+
+        Thread t = new Thread(() -> {
+            try {
+                queue.take(); // Should block here
+            } catch (InterruptedException e) {
+                // Expected interruption during exit
+            }
+        });
+        t.setDaemon(true);
+        t.start();
+
+        Thread.sleep(100);
+
+        if (t.getState() == Thread.State.WAITING) {
+            System.out.println("PASSED (Thread State: WAITING)");
+            return true;
+        } else {
+            System.out.println("FAILED (Thread State: " + t.getState() + ")");
             return false;
         }
     }
