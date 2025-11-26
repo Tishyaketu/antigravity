@@ -19,7 +19,7 @@ import com.assessment.workers.Producer;
 <span class="fc bfc" id="L19" title="All 2 branches covered.">        while (uniqueNumbers.size() &lt; randomLength) {</span>
 <span class="fc" id="L20">            int num = random.nextInt(100) + 1; // 1-100</span>
 <span class="fc" id="L21">            uniqueNumbers.add(num);</span>
-        }
+<span class="fc" id="L22">        }</span>
 
 <span class="fc" id="L24">        List&lt;Integer&gt; sourceContainer = new ArrayList&lt;&gt;(uniqueNumbers);</span>
 <span class="fc" id="L25">        Collections.shuffle(sourceContainer);</span>
@@ -37,7 +37,7 @@ import com.assessment.workers.Producer;
 <span class="pc bpc" id="L37" title="1 of 2 branches missed.">                if (capacity &lt;= 0) {</span>
 <span class="nc" id="L38">                    System.out.println(&quot;&gt;&gt; Error: Queue cannot be non-existent! Enter 1 or greater.&quot;);</span>
                 }
-<span class="nc" id="L40">            } else {</span>
+            } else {
 <span class="nc" id="L41">                System.out.println(&quot;&gt;&gt; Error: Invalid input. Enter a positive integer number.&quot;);</span>
 <span class="nc" id="L42">                scanner.next(); // Clear invalid input</span>
             }
@@ -62,9 +62,9 @@ import com.assessment.workers.Producer;
         try {
 <span class="fc" id="L63">            pThread.join();</span>
 <span class="fc" id="L64">            cThread.join();</span>
-<span class="pc" id="L65">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L65">        } catch (InterruptedException e) {</span>
 <span class="nc" id="L66">            e.printStackTrace();</span>
-        }
+<span class="fc" id="L67">        }</span>
 
         // 5. Final Verification
 <span class="fc" id="L70">        System.out.println(&quot;\n=== Simulation Complete ===&quot;);</span>
@@ -76,7 +76,7 @@ import com.assessment.workers.Producer;
 
 <span class="pc bpc" id="L77" title="1 of 2 branches missed.">        if (sourceContainer.equals(destinationContainer)) {</span>
 <span class="fc" id="L78">            System.out.println(&quot;SUCCESS: Data transfer perfectly matched!&quot;);</span>
-<span class="fc" id="L79">        } else {</span>
+        } else {
 <span class="nc" id="L80">            System.out.println(&quot;FAILURE: Data mismatch.&quot;);</span>
         }
 

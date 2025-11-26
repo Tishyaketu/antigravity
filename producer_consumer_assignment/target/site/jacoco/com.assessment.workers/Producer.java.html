@@ -26,14 +26,14 @@ public class Producer implements Runnable {
                 // DYNAMIC SPEED: Random sleep between 100ms and 800ms
 <span class="fc" id="L27">                int delay = 100 + random.nextInt(700);</span>
 <span class="fc" id="L28">                Thread.sleep(delay);</span>
-            }
+<span class="fc" id="L29">            }</span>
 
 <span class="fc" id="L31">            System.out.println(&quot;[Producer] Work finished. Sending POISON PILL (-1)...&quot;);</span>
 <span class="fc" id="L32">            queue.put(-1);</span>
 
-<span class="pc" id="L34">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L34">        } catch (InterruptedException e) {</span>
 <span class="nc" id="L35">            Thread.currentThread().interrupt();</span>
-        }
+<span class="fc" id="L36">        }</span>
 <span class="fc" id="L37">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

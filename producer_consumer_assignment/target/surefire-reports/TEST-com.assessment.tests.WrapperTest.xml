@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.assessment.tests.WrapperTest" time="6.015" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.assessment.tests.WrapperTest" time="3.792" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -11,7 +11,7 @@
     <property name="java.vm.specification.version" value="17"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-17-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/tish/thas/intuit/producer_consumer_assignment/target/surefire/surefirebooter-20251126114920993_3.jar /home/tish/thas/intuit/producer_consumer_assignment/target/surefire 2025-11-26T11-49-20_870-jvmRun1 surefire-20251126114920993_1tmp surefire_0-20251126114920993_2tmp"/>
+    <property name="sun.java.command" value="/home/tish/thas/intuit/producer_consumer_assignment/target/surefire/surefirebooter-20251126125331430_3.jar /home/tish/thas/intuit/producer_consumer_assignment/target/surefire 2025-11-26T12-53-31_322-jvmRun1 surefire-20251126125331430_1tmp surefire_0-20251126125331430_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/tish/thas/intuit/producer_consumer_assignment/target/test-classes:/home/tish/thas/intuit/producer_consumer_assignment/target/classes:/home/tish/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar:/home/tish/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -26,7 +26,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/home/tish/thas/intuit/producer_consumer_assignment/target/surefire/surefirebooter-20251126114920993_3.jar"/>
+    <property name="surefire.real.class.path" value="/home/tish/thas/intuit/producer_consumer_assignment/target/surefire/surefirebooter-20251126125331430_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="17.0.17+10-Ubuntu-122.04"/>
     <property name="user.name" value="tish"/>
@@ -51,7 +51,7 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="runMainTest" classname="com.assessment.tests.WrapperTest" time="5.921">
+  <testcase name="runMainTest" classname="com.assessment.tests.WrapperTest" time="3.672">
     <system-out><![CDATA[==========================================
 RUNNING COMPREHENSIVE UNIT TESTS
 ==========================================
@@ -69,15 +69,15 @@ Consumed: 2 | Queue State: [3] (Size: 1)
 Consumed: 3 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
 Produced: 4 | Queue State: [4] (Size: 1)
-Consumed: 4 | Queue State: [] (Size: 0)
-	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 5 | Queue State: [5] (Size: 1)
-Produced: 6 | Queue State: [5, 6] (Size: 2)
+Produced: 5 | Queue State: [4, 5] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 5 | Queue State: [6] (Size: 1)
-Consumed: 6 | Queue State: [] (Size: 0)
+Consumed: 4 | Queue State: [5] (Size: 1)
+Consumed: 5 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 7 | Queue State: [7] (Size: 1)
+Produced: 6 | Queue State: [6] (Size: 1)
+Produced: 7 | Queue State: [6, 7] (Size: 2)
+	[Queue] FULL (2/2). Producer waiting...
+Consumed: 6 | Queue State: [7] (Size: 1)
 Consumed: 7 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
 Produced: 8 | Queue State: [8] (Size: 1)
@@ -99,60 +99,60 @@ Consumed: 12 | Queue State: [13] (Size: 1)
 Consumed: 13 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
 Produced: 14 | Queue State: [14] (Size: 1)
-Consumed: 14 | Queue State: [] (Size: 0)
-	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 15 | Queue State: [15] (Size: 1)
-Produced: 16 | Queue State: [15, 16] (Size: 2)
+Produced: 15 | Queue State: [14, 15] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 15 | Queue State: [16] (Size: 1)
-Consumed: 16 | Queue State: [] (Size: 0)
+Consumed: 14 | Queue State: [15] (Size: 1)
+Consumed: 15 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 17 | Queue State: [17] (Size: 1)
-Produced: 18 | Queue State: [17, 18] (Size: 2)
+Produced: 16 | Queue State: [16] (Size: 1)
+Produced: 17 | Queue State: [16, 17] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 17 | Queue State: [18] (Size: 1)
-Consumed: 18 | Queue State: [] (Size: 0)
+Consumed: 16 | Queue State: [17] (Size: 1)
+Consumed: 17 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 19 | Queue State: [19] (Size: 1)
-Produced: 20 | Queue State: [19, 20] (Size: 2)
+Produced: 18 | Queue State: [18] (Size: 1)
+Produced: 19 | Queue State: [18, 19] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 19 | Queue State: [20] (Size: 1)
-Consumed: 20 | Queue State: [] (Size: 0)
+Consumed: 18 | Queue State: [19] (Size: 1)
+Consumed: 19 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 21 | Queue State: [21] (Size: 1)
-Produced: 22 | Queue State: [21, 22] (Size: 2)
+Produced: 20 | Queue State: [20] (Size: 1)
+Produced: 21 | Queue State: [20, 21] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 21 | Queue State: [22] (Size: 1)
-Consumed: 22 | Queue State: [] (Size: 0)
+Consumed: 20 | Queue State: [21] (Size: 1)
+Consumed: 21 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 23 | Queue State: [23] (Size: 1)
-Produced: 24 | Queue State: [23, 24] (Size: 2)
+Produced: 22 | Queue State: [22] (Size: 1)
+Produced: 23 | Queue State: [22, 23] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 23 | Queue State: [24] (Size: 1)
+Consumed: 22 | Queue State: [23] (Size: 1)
+Consumed: 23 | Queue State: [] (Size: 0)
+	[Queue] EMPTY (0/2). Consumer waiting...
+Produced: 24 | Queue State: [24] (Size: 1)
 Consumed: 24 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
 Produced: 25 | Queue State: [25] (Size: 1)
 Produced: 26 | Queue State: [25, 26] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
 Consumed: 25 | Queue State: [26] (Size: 1)
-Produced: 27 | Queue State: [26, 27] (Size: 2)
-	[Queue] FULL (2/2). Producer waiting...
-Consumed: 26 | Queue State: [27] (Size: 1)
-Consumed: 27 | Queue State: [] (Size: 0)
+Consumed: 26 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 28 | Queue State: [28] (Size: 1)
-Produced: 29 | Queue State: [28, 29] (Size: 2)
+Produced: 27 | Queue State: [27] (Size: 1)
+Produced: 28 | Queue State: [27, 28] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 28 | Queue State: [29] (Size: 1)
-Consumed: 29 | Queue State: [] (Size: 0)
+Consumed: 27 | Queue State: [28] (Size: 1)
+Consumed: 28 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 30 | Queue State: [30] (Size: 1)
-Produced: 31 | Queue State: [30, 31] (Size: 2)
+Produced: 29 | Queue State: [29] (Size: 1)
+Produced: 30 | Queue State: [29, 30] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 30 | Queue State: [31] (Size: 1)
-Consumed: 31 | Queue State: [] (Size: 0)
+Consumed: 29 | Queue State: [30] (Size: 1)
+Consumed: 30 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 32 | Queue State: [32] (Size: 1)
+Produced: 31 | Queue State: [31] (Size: 1)
+Produced: 32 | Queue State: [31, 32] (Size: 2)
+	[Queue] FULL (2/2). Producer waiting...
+Consumed: 31 | Queue State: [32] (Size: 1)
 Consumed: 32 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
 Produced: 33 | Queue State: [33] (Size: 1)
@@ -231,69 +231,69 @@ Produced: 57 | Queue State: [57] (Size: 1)
 Produced: 58 | Queue State: [57, 58] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
 Consumed: 57 | Queue State: [58] (Size: 1)
-Produced: 59 | Queue State: [58, 59] (Size: 2)
-	[Queue] FULL (2/2). Producer waiting...
-Consumed: 58 | Queue State: [59] (Size: 1)
-Consumed: 59 | Queue State: [] (Size: 0)
+Consumed: 58 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 60 | Queue State: [60] (Size: 1)
-Produced: 61 | Queue State: [60, 61] (Size: 2)
+Produced: 59 | Queue State: [59] (Size: 1)
+Produced: 60 | Queue State: [59, 60] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 60 | Queue State: [61] (Size: 1)
-Consumed: 61 | Queue State: [] (Size: 0)
+Consumed: 59 | Queue State: [60] (Size: 1)
+Consumed: 60 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 62 | Queue State: [62] (Size: 1)
-Produced: 63 | Queue State: [62, 63] (Size: 2)
+Produced: 61 | Queue State: [61] (Size: 1)
+Produced: 62 | Queue State: [61, 62] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 62 | Queue State: [63] (Size: 1)
-Consumed: 63 | Queue State: [] (Size: 0)
+Consumed: 61 | Queue State: [62] (Size: 1)
+Consumed: 62 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 64 | Queue State: [64] (Size: 1)
-Produced: 65 | Queue State: [64, 65] (Size: 2)
+Produced: 63 | Queue State: [63] (Size: 1)
+Produced: 64 | Queue State: [63, 64] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 64 | Queue State: [65] (Size: 1)
-Consumed: 65 | Queue State: [] (Size: 0)
+Consumed: 63 | Queue State: [64] (Size: 1)
+Consumed: 64 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 66 | Queue State: [66] (Size: 1)
-Produced: 67 | Queue State: [66, 67] (Size: 2)
+Produced: 65 | Queue State: [65] (Size: 1)
+Produced: 66 | Queue State: [65, 66] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 66 | Queue State: [67] (Size: 1)
-Consumed: 67 | Queue State: [] (Size: 0)
+Consumed: 65 | Queue State: [66] (Size: 1)
+Consumed: 66 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 68 | Queue State: [68] (Size: 1)
-Produced: 69 | Queue State: [68, 69] (Size: 2)
+Produced: 67 | Queue State: [67] (Size: 1)
+Produced: 68 | Queue State: [67, 68] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 68 | Queue State: [69] (Size: 1)
-Consumed: 69 | Queue State: [] (Size: 0)
+Consumed: 67 | Queue State: [68] (Size: 1)
+Consumed: 68 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 70 | Queue State: [70] (Size: 1)
-Produced: 71 | Queue State: [70, 71] (Size: 2)
+Produced: 69 | Queue State: [69] (Size: 1)
+Produced: 70 | Queue State: [69, 70] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 70 | Queue State: [71] (Size: 1)
-Consumed: 71 | Queue State: [] (Size: 0)
+Consumed: 69 | Queue State: [70] (Size: 1)
+Consumed: 70 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 72 | Queue State: [72] (Size: 1)
-Produced: 73 | Queue State: [72, 73] (Size: 2)
+Produced: 71 | Queue State: [71] (Size: 1)
+Produced: 72 | Queue State: [71, 72] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 72 | Queue State: [73] (Size: 1)
-Consumed: 73 | Queue State: [] (Size: 0)
+Consumed: 71 | Queue State: [72] (Size: 1)
+Consumed: 72 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 74 | Queue State: [74] (Size: 1)
-Produced: 75 | Queue State: [74, 75] (Size: 2)
+Produced: 73 | Queue State: [73] (Size: 1)
+Produced: 74 | Queue State: [73, 74] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 74 | Queue State: [75] (Size: 1)
-Consumed: 75 | Queue State: [] (Size: 0)
+Consumed: 73 | Queue State: [74] (Size: 1)
+Consumed: 74 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 76 | Queue State: [76] (Size: 1)
-Produced: 77 | Queue State: [76, 77] (Size: 2)
+Produced: 75 | Queue State: [75] (Size: 1)
+Produced: 76 | Queue State: [75, 76] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 76 | Queue State: [77] (Size: 1)
+Consumed: 75 | Queue State: [76] (Size: 1)
+Consumed: 76 | Queue State: [] (Size: 0)
+	[Queue] EMPTY (0/2). Consumer waiting...
+Produced: 77 | Queue State: [77] (Size: 1)
 Consumed: 77 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
 Produced: 78 | Queue State: [78] (Size: 1)
-Produced: 79 | Queue State: [78, 79] (Size: 2)
-	[Queue] FULL (2/2). Producer waiting...
-Consumed: 78 | Queue State: [79] (Size: 1)
+Consumed: 78 | Queue State: [] (Size: 0)
+	[Queue] EMPTY (0/2). Consumer waiting...
+Produced: 79 | Queue State: [79] (Size: 1)
 Consumed: 79 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
 Produced: 80 | Queue State: [80] (Size: 1)
@@ -319,6 +319,7 @@ Produced: 87 | Queue State: [86, 87] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
 Consumed: 86 | Queue State: [87] (Size: 1)
 Consumed: 87 | Queue State: [] (Size: 0)
+	[Queue] EMPTY (0/2). Consumer waiting...
 Produced: 88 | Queue State: [88] (Size: 1)
 Produced: 89 | Queue State: [88, 89] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
@@ -326,21 +327,21 @@ Consumed: 88 | Queue State: [89] (Size: 1)
 Consumed: 89 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
 Produced: 90 | Queue State: [90] (Size: 1)
-Produced: 91 | Queue State: [90, 91] (Size: 2)
-	[Queue] FULL (2/2). Producer waiting...
-Consumed: 90 | Queue State: [91] (Size: 1)
-Consumed: 91 | Queue State: [] (Size: 0)
+Consumed: 90 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 92 | Queue State: [92] (Size: 1)
-Produced: 93 | Queue State: [92, 93] (Size: 2)
+Produced: 91 | Queue State: [91] (Size: 1)
+Produced: 92 | Queue State: [91, 92] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 92 | Queue State: [93] (Size: 1)
-Consumed: 93 | Queue State: [] (Size: 0)
+Consumed: 91 | Queue State: [92] (Size: 1)
+Consumed: 92 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
-Produced: 94 | Queue State: [94] (Size: 1)
-Produced: 95 | Queue State: [94, 95] (Size: 2)
+Produced: 93 | Queue State: [93] (Size: 1)
+Produced: 94 | Queue State: [93, 94] (Size: 2)
 	[Queue] FULL (2/2). Producer waiting...
-Consumed: 94 | Queue State: [95] (Size: 1)
+Consumed: 93 | Queue State: [94] (Size: 1)
+Consumed: 94 | Queue State: [] (Size: 0)
+	[Queue] EMPTY (0/2). Consumer waiting...
+Produced: 95 | Queue State: [95] (Size: 1)
 Consumed: 95 | Queue State: [] (Size: 0)
 	[Queue] EMPTY (0/2). Consumer waiting...
 Produced: 96 | Queue State: [96] (Size: 1)
@@ -371,10 +372,10 @@ Produced: 100 | Queue State: [100] (Size: 1)
 Produced: 200 | Queue State: [100, 200] (Size: 2)
 Consumed: 100 | Queue State: [200] (Size: 1)
 	[Destination] Added 100 | Current Dest: [100] (Size: 1)
-Consumed: 200 | Queue State: [] (Size: 0)
-	[Destination] Added 200 | Current Dest: [100, 200] (Size: 2)
 [Producer] Reading from source: 300
-Produced: 300 | Queue State: [300] (Size: 1)
+Produced: 300 | Queue State: [200, 300] (Size: 2)
+Consumed: 200 | Queue State: [300] (Size: 1)
+	[Destination] Added 200 | Current Dest: [100, 200] (Size: 2)
 [Producer] Work finished. Sending POISON PILL (-1)...
 Produced: -1 | Queue State: [300, -1] (Size: 2)
 Consumed: 300 | Queue State: [-1] (Size: 1)
@@ -382,53 +383,31 @@ Consumed: 300 | Queue State: [-1] (Size: 1)
 Consumed: -1 | Queue State: [] (Size: 0)
 [Consumer] Caught POISON PILL. Stopping...
 PASSED
-[Test 5.0] Main App Execution... Generating 7 unique items...
+[Test 5.0] Main App Execution... Generating 2 unique items...
 === Source Container Generated ===
-[39, 100, 78, 83, 3, 1, 60]
+[44, 91]
 ==================================
 
 Enter Shared Queue Capacity (Positive Integer): 
 === Starting Simulation ===
 
-[Producer] Starting to process 7 items.
-[Producer] Reading from source: 39
-Produced: 39 | Queue State: [39] (Size: 1)
-Consumed: 39 | Queue State: [] (Size: 0)
-	[Destination] Added 39 | Current Dest: [39] (Size: 1)
-[Producer] Reading from source: 100
-Produced: 100 | Queue State: [100] (Size: 1)
-Consumed: 100 | Queue State: [] (Size: 0)
-	[Destination] Added 100 | Current Dest: [39, 100] (Size: 2)
-[Producer] Reading from source: 78
-Produced: 78 | Queue State: [78] (Size: 1)
-Consumed: 78 | Queue State: [] (Size: 0)
-	[Destination] Added 78 | Current Dest: [39, 100, 78] (Size: 3)
-[Producer] Reading from source: 83
-Produced: 83 | Queue State: [83] (Size: 1)
-Consumed: 83 | Queue State: [] (Size: 0)
-	[Destination] Added 83 | Current Dest: [39, 100, 78, 83] (Size: 4)
-[Producer] Reading from source: 3
-Produced: 3 | Queue State: [3] (Size: 1)
-Consumed: 3 | Queue State: [] (Size: 0)
-	[Destination] Added 3 | Current Dest: [39, 100, 78, 83, 3] (Size: 5)
-[Producer] Reading from source: 1
-Produced: 1 | Queue State: [1] (Size: 1)
-Consumed: 1 | Queue State: [] (Size: 0)
-	[Destination] Added 1 | Current Dest: [39, 100, 78, 83, 3, 1] (Size: 6)
-	[Queue] EMPTY (0/5). Consumer waiting...
-[Producer] Reading from source: 60
-Produced: 60 | Queue State: [60] (Size: 1)
-Consumed: 60 | Queue State: [] (Size: 0)
-	[Destination] Added 60 | Current Dest: [39, 100, 78, 83, 3, 1, 60] (Size: 7)
-	[Queue] EMPTY (0/5). Consumer waiting...
+[Producer] Starting to process 2 items.
+[Producer] Reading from source: 44
+Produced: 44 | Queue State: [44] (Size: 1)
+[Producer] Reading from source: 91
+Produced: 91 | Queue State: [44, 91] (Size: 2)
+Consumed: 44 | Queue State: [91] (Size: 1)
+	[Destination] Added 44 | Current Dest: [44] (Size: 1)
 [Producer] Work finished. Sending POISON PILL (-1)...
-Produced: -1 | Queue State: [-1] (Size: 1)
+Produced: -1 | Queue State: [91, -1] (Size: 2)
+Consumed: 91 | Queue State: [-1] (Size: 1)
+	[Destination] Added 91 | Current Dest: [44, 91] (Size: 2)
 Consumed: -1 | Queue State: [] (Size: 0)
 [Consumer] Caught POISON PILL. Stopping...
 
 === Simulation Complete ===
-Source List:      [39, 100, 78, 83, 3, 1, 60]
-Destination List: [39, 100, 78, 83, 3, 1, 60]
+Source List:      [44, 91]
+Destination List: [44, 91]
 SUCCESS: Data transfer perfectly matched!
 PASSED
 
