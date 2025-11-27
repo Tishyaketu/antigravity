@@ -6,10 +6,10 @@ This document outlines the comprehensive testing strategy implemented for the Pr
 
 The testing infrastructure is designed to verify both the low-level synchronization primitives and the high-level application behavior.
 
-### 1. The Core Test Suite (`TestBlockingQueue.java`)
+### 1. The Core Test Suite (`TestSharedQueue.java`)
 This is the "brain" of the testing logic. Unlike standard unit tests that mock everything, this suite spins up **real threads** to simulate actual runtime conditions.
 
-*   **Location:** `src/com/assessment/tests/TestBlockingQueue.java`
+*   **Location:** `src/com/assessment/tests/TestSharedQueue.java`
 *   **Type:** Integration & System Tests
 *   **Mechanism:** It executes a series of scenarios programmatically and returns a boolean success status.
 
@@ -26,7 +26,7 @@ This acts as the bridge to the Maven build lifecycle.
 
 We have achieved **92.6% Total Code Coverage**, verifying the following critical components:
 
-### ✅ 1. Core Synchronization Logic (`SimpleBlockingQueue`)
+### ✅ 1. Core Synchronization Logic (`SharedQueue`)
 *   **Coverage:** **100%**
 *   **Scenarios:**
     *   **Input Validation:** Verifies that the queue rejects invalid capacities (e.g., 0 or negative numbers).
@@ -64,7 +64,7 @@ mvn clean test
 ### Option 2: Standalone Manual Test
 You can run the test suite directly to see the detailed console output without Maven.
 ```bash
-java -cp src:target/classes com.assessment.tests.TestBlockingQueue
+java -cp src:target/classes com.assessment.tests.TestSharedQueue
 ```
 
 ---
@@ -73,10 +73,10 @@ java -cp src:target/classes com.assessment.tests.TestBlockingQueue
 
 | Component | Class | Coverage | Status |
 | :--- | :--- | :--- | :--- |
-| **Core Logic** | `SimpleBlockingQueue` | **100%** | ✅ Perfect |
+| **Core Logic** | `SharedQueue` | **100%** | ✅ Perfect |
 | **Workers** | `Producer` | **95.3%** | ✅ Excellent |
 | | `Consumer` | **94.8%** | ✅ Excellent |
 | **Application** | `Main` | **88.2%** | ✅ Very High |
-| **Test Suite** | `TestBlockingQueue` | **85.8%** | ✅ High |
+| **Test Suite** | `TestSharedQueue` | **85.8%** | ✅ High |
 
 **Total Project Coverage:** **92.6%**

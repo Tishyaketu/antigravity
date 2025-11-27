@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TestSharedQueue.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">producer-consumer-assignment</a> &gt; <a href="index.source.html" class="el_package">com.assessment.tests</a> &gt; <span class="el_source">TestSharedQueue.java</span></div><h1>TestSharedQueue.java</h1><pre class="source lang-java linenums">package com.assessment.tests;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
+import com.assessment.core.SharedQueue;
+
+import com.assessment.app.Main;
+import java.io.InputStream;
+
+// Custom test harness to verify the Producer-Consumer implementation.
+// We use this manual approach to have fine-grained control over thread states and assertions
+// which can be tricky with standard unit testing frameworks alone.
+<span class="nc" id="L14">public class TestSharedQueue {</span>
+
+    // Simple class to hold test results for the summary
+    static class TestResult {
+        String name;
+        boolean passed;
+
+<span class="fc" id="L21">        TestResult(String name, boolean passed) {</span>
+<span class="fc" id="L22">            this.name = name;</span>
+<span class="fc" id="L23">            this.passed = passed;</span>
+<span class="fc" id="L24">        }</span>
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+<span class="nc" id="L28">        runTests();</span>
+<span class="nc" id="L29">    }</span>
+
+    // Orchestrates the execution of all unit and integration tests.
+    // Returns true only if ALL tests pass.
+    public static boolean runTests() throws InterruptedException {
+<span class="fc" id="L34">        System.out.println(&quot;==========================================&quot;);</span>
+<span class="fc" id="L35">        System.out.println(&quot;RUNNING COMPREHENSIVE UNIT TESTS&quot;);</span>
+<span class="fc" id="L36">        System.out.println(&quot;==========================================&quot;);</span>
+
+<span class="fc" id="L38">        List&lt;TestResult&gt; results = new ArrayList&lt;&gt;();</span>
+
+        // --- TEST 3.1: Input Validation ---
+<span class="fc" id="L41">        boolean valPass = testInputValidation();</span>
+<span class="fc" id="L42">        results.add(new TestResult(&quot;3.1 Input Validation&quot;, valPass));</span>
+
+        // --- TEST 3.2 &amp; 3.3: Sync &amp; Concurrency ---
+        // We use the Stress Test to prove both synchronization and concurrent execution
+        // at once.
+<span class="fc" id="L47">        boolean concPass = testConcurrencyAndDataIntegrity();</span>
+<span class="fc" id="L48">        results.add(new TestResult(&quot;3.2 Thread Synchronization&quot;, concPass));</span>
+<span class="fc" id="L49">        results.add(new TestResult(&quot;3.3 Concurrent Programming&quot;, concPass));</span>
+
+        // --- TEST 3.4 &amp; 3.5: Blocking &amp; Wait/Notify ---
+        // The &quot;Blocking&quot; behavior physically proves the &quot;Wait/Notify&quot; mechanism works.
+<span class="fc" id="L53">        boolean prodBlockPass = testProducerBlocksWhenFull();</span>
+<span class="fc" id="L54">        results.add(new TestResult(&quot;3.4 Blocking Queues (Full)&quot;, prodBlockPass));</span>
+
+<span class="fc" id="L56">        boolean consBlockPass = testConsumerBlocksWhenEmpty();</span>
+<span class="fc" id="L57">        results.add(new TestResult(&quot;3.5 Blocking Queues (Empty)&quot;, consBlockPass));</span>
+
+        // If blocking worked in both directions, the Wait/Notify mechanism is verified
+<span class="pc bpc" id="L60" title="2 of 4 branches missed.">        boolean waitNotifyPass = prodBlockPass &amp;&amp; consBlockPass;</span>
+<span class="fc" id="L61">        results.add(new TestResult(&quot;Mech: Wait/Notify Mechanism&quot;, waitNotifyPass));</span>
+
+        // --- TEST 4.0: Real Workers ---
+<span class="fc" id="L64">        boolean workersPass = testRealWorkerClasses();</span>
+<span class="fc" id="L65">        results.add(new TestResult(&quot;4.0 Real Worker Classes&quot;, workersPass));</span>
+
+        // --- TEST 5.0: Main App ---
+<span class="fc" id="L68">        boolean mainPass = testMainApp();</span>
+<span class="fc" id="L69">        results.add(new TestResult(&quot;5.0 Main App Entry&quot;, mainPass));</span>
+
+        // Calculate totals
+<span class="fc" id="L72">        long passedCount = results.stream().filter(r -&gt; r.passed).count();</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        long failedCount = results.stream().filter(r -&gt; !r.passed).count();</span>
+
+<span class="fc" id="L75">        System.out.println(&quot;\n==========================================&quot;);</span>
+<span class="fc" id="L76">        System.out.println(&quot;TEST SUMMARY&quot;);</span>
+<span class="fc" id="L77">        System.out.println(&quot;==========================================&quot;);</span>
+
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        for (TestResult result : results) {</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">            String status = result.passed ? &quot;[PASSED]&quot; : &quot;[FAILED]&quot;;</span>
+            // Print neatly aligned
+<span class="fc" id="L82">            System.out.printf(&quot;%-8s %s%n&quot;, status, result.name);</span>
+<span class="fc" id="L83">        }</span>
+
+<span class="fc" id="L85">        System.out.println(&quot;------------------------------------------&quot;);</span>
+<span class="fc" id="L86">        System.out.println(&quot;Total: &quot; + passedCount + &quot; Passed, &quot; + failedCount + &quot; Failed&quot;);</span>
+<span class="fc" id="L87">        System.out.println(&quot;==========================================&quot;);</span>
+
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">        return failedCount == 0;</span>
+    }
+
+    // --- TEST METHOD 1: Invalid Inputs ---
+    // Verifies that the application correctly rejects invalid configuration (e.g.,
+    // negative capacity).
+    public static boolean testInputValidation() {
+<span class="fc" id="L96">        System.out.print(&quot;[Test 3.1] Input Validation (Capacity &gt; 0)... &quot;);</span>
+
+<span class="fc" id="L98">        boolean result = true;</span>
+        // Verify valid inputs pass
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">        if (!Main.isValidCapacity(5))</span>
+<span class="nc" id="L101">            result = false;</span>
+        // Verify invalid inputs fail (0 and negative numbers)
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (Main.isValidCapacity(0))</span>
+<span class="nc" id="L104">            result = false;</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">        if (Main.isValidCapacity(-5))</span>
+<span class="nc" id="L106">            result = false;</span>
+
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">        if (result)</span>
+<span class="fc" id="L109">            System.out.println(&quot;PASSED&quot;);</span>
+        else
+<span class="nc" id="L111">            System.out.println(&quot;FAILED&quot;);</span>
+<span class="fc" id="L112">        return result;</span>
+    }
+
+    // --- TEST METHOD 2 &amp; 3: Concurrency Stress &amp; Sync Test ---
+    // This is the most critical test. It uses a small buffer (capacity 2) to force
+    // frequent context switching between Producer and Consumer.
+    // If synchronization is broken, items will be lost or duplicated.
+    public static boolean testConcurrencyAndDataIntegrity() throws InterruptedException {
+<span class="fc" id="L120">        System.out.print(&quot;[Test 3.2 &amp; 3.3] Concurrency &amp; Sync (Stress Test)... &quot;);</span>
+
+        // Setup: Transfer 100 items with a tiny buffer (capacity 2)
+        // This forces intense context switching.
+<span class="fc" id="L124">        int itemCount = 100;</span>
+<span class="fc" id="L125">        SharedQueue&lt;Integer&gt; queue = new SharedQueue&lt;&gt;(2);</span>
+<span class="fc" id="L126">        List&lt;Integer&gt; source = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        for (int i = 0; i &lt; itemCount; i++)</span>
+<span class="fc" id="L128">            source.add(i);</span>
+
+        // Destination list must be thread-safe for verification
+<span class="fc" id="L131">        List&lt;Integer&gt; dest = Collections.synchronizedList(new ArrayList&lt;&gt;());</span>
+
+<span class="fc" id="L133">        Thread producer = new Thread(() -&gt; {</span>
+            try {
+<span class="fc bfc" id="L135" title="All 2 branches covered.">                for (Integer item : source)</span>
+<span class="fc" id="L136">                    queue.put(item);</span>
+<span class="fc" id="L137">                queue.put(-1); // Poison Pill</span>
+<span class="nc" id="L138">            } catch (InterruptedException e) {</span>
+<span class="fc" id="L139">            }</span>
+<span class="fc" id="L140">        });</span>
+
+<span class="fc" id="L142">        Thread consumer = new Thread(() -&gt; {</span>
+            try {
+                while (true) {
+<span class="fc" id="L145">                    Integer item = queue.take();</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">                    if (item == -1)</span>
+<span class="fc" id="L147">                        break;</span>
+<span class="fc" id="L148">                    dest.add(item);</span>
+<span class="fc" id="L149">                }</span>
+<span class="nc" id="L150">            } catch (InterruptedException e) {</span>
+<span class="fc" id="L151">            }</span>
+<span class="fc" id="L152">        });</span>
+
+<span class="fc" id="L154">        producer.setDaemon(true);</span>
+<span class="fc" id="L155">        consumer.setDaemon(true);</span>
+
+<span class="fc" id="L157">        producer.start();</span>
+<span class="fc" id="L158">        consumer.start();</span>
+
+<span class="fc" id="L160">        producer.join(2000);</span>
+<span class="fc" id="L161">        consumer.join(2000);</span>
+
+        // Verify that every single item was transferred correctly
+<span class="pc bpc" id="L164" title="2 of 4 branches missed.">        if (dest.size() == itemCount &amp;&amp; dest.containsAll(source)) {</span>
+<span class="fc" id="L165">            System.out.println(&quot;PASSED (Transferred &quot; + dest.size() + &quot; items)&quot;);</span>
+<span class="fc" id="L166">            return true;</span>
+        } else {
+<span class="nc" id="L168">            System.out.println(&quot;FAILED (Source: &quot; + itemCount + &quot;, Dest: &quot; + dest.size() + &quot;)&quot;);</span>
+<span class="nc" id="L169">            return false;</span>
+        }
+    }
+
+    // --- TEST METHOD 4: Producer Blocking ---
+    // Verifies that the Producer correctly enters the WAITING state when the queue
+    // is full.
+    // This confirms that `lock.wait()` is being called.
+    public static boolean testProducerBlocksWhenFull() throws InterruptedException {
+<span class="fc" id="L178">        System.out.print(&quot;[Test 3.4] Producer Blocks when Full... &quot;);</span>
+
+<span class="fc" id="L180">        SharedQueue&lt;Integer&gt; queue = new SharedQueue&lt;&gt;(1);</span>
+<span class="fc" id="L181">        queue.put(1); // Fill the queue</span>
+
+<span class="fc" id="L183">        Thread t = new Thread(() -&gt; {</span>
+            try {
+<span class="nc" id="L185">                queue.put(2); // Should block here because capacity is 1</span>
+<span class="nc" id="L186">            } catch (InterruptedException e) {</span>
+                // Expected interruption during exit
+<span class="nc" id="L188">            }</span>
+<span class="nc" id="L189">        });</span>
+<span class="fc" id="L190">        t.setDaemon(true);</span>
+<span class="fc" id="L191">        t.start();</span>
+
+<span class="fc" id="L193">        Thread.sleep(100); // Give it time to try and block</span>
+
+        // Assert that the thread is physically waiting
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">        if (t.getState() == Thread.State.WAITING) {</span>
+<span class="fc" id="L197">            System.out.println(&quot;PASSED (Thread State: WAITING)&quot;);</span>
+<span class="fc" id="L198">            return true;</span>
+        } else {
+<span class="nc" id="L200">            System.out.println(&quot;FAILED (Thread State: &quot; + t.getState() + &quot;)&quot;);</span>
+<span class="nc" id="L201">            return false;</span>
+        }
+    }
+
+    // --- TEST METHOD 5: Consumer Blocking ---
+    // Verifies that the Consumer correctly enters the WAITING state when the queue
+    // is empty.
+    public static boolean testConsumerBlocksWhenEmpty() throws InterruptedException {
+<span class="fc" id="L209">        System.out.print(&quot;[Test 3.5] Consumer Blocks when Empty... &quot;);</span>
+
+<span class="fc" id="L211">        SharedQueue&lt;Integer&gt; queue = new SharedQueue&lt;&gt;(1); // Empty</span>
+
+<span class="fc" id="L213">        Thread t = new Thread(() -&gt; {</span>
+            try {
+<span class="nc" id="L215">                queue.take(); // Should block here because queue is empty</span>
+<span class="nc" id="L216">            } catch (InterruptedException e) {</span>
+                // Expected interruption during exit
+<span class="nc" id="L218">            }</span>
+<span class="nc" id="L219">        });</span>
+<span class="fc" id="L220">        t.setDaemon(true);</span>
+<span class="fc" id="L221">        t.start();</span>
+
+<span class="fc" id="L223">        Thread.sleep(100);</span>
+
+        // Assert that the thread is physically waiting
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">        if (t.getState() == Thread.State.WAITING) {</span>
+<span class="fc" id="L227">            System.out.println(&quot;PASSED (Thread State: WAITING)&quot;);</span>
+<span class="fc" id="L228">            return true;</span>
+        } else {
+<span class="nc" id="L230">            System.out.println(&quot;FAILED (Thread State: &quot; + t.getState() + &quot;)&quot;);</span>
+<span class="nc" id="L231">            return false;</span>
+        }
+    }
+
+    // --- TEST METHOD 6: Real Worker Classes ---
+    // Integration test using the actual Producer and Consumer classes to ensure
+    // they work together.
+    public static boolean testRealWorkerClasses() throws InterruptedException {
+<span class="fc" id="L239">        System.out.print(&quot;[Test 4.0] Real Producer/Consumer Classes... &quot;);</span>
+
+<span class="fc" id="L241">        List&lt;Integer&gt; source = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L242">        source.add(100);</span>
+<span class="fc" id="L243">        source.add(200);</span>
+<span class="fc" id="L244">        source.add(300);</span>
+
+<span class="fc" id="L246">        List&lt;Integer&gt; dest = Collections.synchronizedList(new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L247">        SharedQueue&lt;Integer&gt; queue = new SharedQueue&lt;&gt;(2);</span>
+
+<span class="fc" id="L249">        com.assessment.workers.Producer producer = new com.assessment.workers.Producer(queue, source);</span>
+<span class="fc" id="L250">        com.assessment.workers.Consumer consumer = new com.assessment.workers.Consumer(queue, dest);</span>
+
+<span class="fc" id="L252">        Thread pThread = new Thread(producer);</span>
+<span class="fc" id="L253">        Thread cThread = new Thread(consumer);</span>
+
+<span class="fc" id="L255">        pThread.start();</span>
+<span class="fc" id="L256">        cThread.start();</span>
+
+<span class="fc" id="L258">        pThread.join(5000);</span>
+<span class="fc" id="L259">        cThread.join(5000);</span>
+
+<span class="pc bpc" id="L261" title="1 of 2 branches missed.">        if (dest.equals(source)) {</span>
+<span class="fc" id="L262">            System.out.println(&quot;PASSED&quot;);</span>
+<span class="fc" id="L263">            return true;</span>
+        } else {
+<span class="nc" id="L265">            System.out.println(&quot;FAILED (Dest: &quot; + dest + &quot;)&quot;);</span>
+<span class="nc" id="L266">            return false;</span>
+        }
+    }
+
+    // --- TEST METHOD 7: Main Application Entry Point ---
+    // Simulates user input to verify the entire application flow via the Main
+    // class.
+    public static boolean testMainApp() {
+<span class="fc" id="L274">        System.out.print(&quot;[Test 5.0] Main App Execution... &quot;);</span>
+
+<span class="fc" id="L276">        InputStream originalIn = System.in;</span>
+        try {
+            // Simulate user typing &quot;5&quot; for capacity
+<span class="fc" id="L279">            String input = &quot;5\n&quot;;</span>
+<span class="fc" id="L280">            System.setIn(new java.io.ByteArrayInputStream(input.getBytes()));</span>
+
+            // Run Main
+<span class="fc" id="L283">            Main.main(new String[] {});</span>
+
+<span class="fc" id="L285">            System.out.println(&quot;PASSED&quot;);</span>
+<span class="fc" id="L286">            return true;</span>
+<span class="nc" id="L287">        } catch (Exception e) {</span>
+<span class="nc" id="L288">            System.out.println(&quot;FAILED (&quot; + e.getMessage() + &quot;)&quot;);</span>
+<span class="nc" id="L289">            e.printStackTrace();</span>
+<span class="nc" id="L290">            return false;</span>
+        } finally {
+<span class="fc" id="L292">            System.setIn(originalIn);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

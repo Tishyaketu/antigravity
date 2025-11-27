@@ -14,12 +14,12 @@ producer_consumer_assignment/
 │       ├── app/
 │       │   └── Main.java                 # Entry point, input validation, and simulation driver
 │       ├── core/
-│       │   └── SimpleBlockingQueue.java  # Custom thread-safe queue (The Monitor Object)
+│       │   └── SharedQueue.java  # Custom thread-safe queue (The Monitor Object)
 │       ├── workers/
 │       │   ├── Producer.java             # Runnable task with dynamic processing speed
 │       │   └── Consumer.java             # Runnable task with dynamic processing speed
 │       └── tests/
-│           └── TestBlockingQueue.java    # Comprehensive manual test suite
+│           └── TestSharedQueue.java    # Comprehensive manual test suite
 └── src_test/
     └── com/assessment/tests/
         └── WrapperTest.java      # JUnit wrapper for CI/CD integration
@@ -31,7 +31,7 @@ This solution satisfies all specific testing objectives outlined in the assignme
 
 ### 1. Thread Synchronization
 *   **Achievement:** Guaranteed data integrity with zero race conditions.
-*   **How:** Implemented using Java's intrinsic locks (`synchronized` blocks) in `SimpleBlockingQueue`. This ensures that only one thread can access the internal data structure at any given millisecond.
+*   **How:** Implemented using Java's intrinsic locks (`synchronized` blocks) in `SharedQueue`. This ensures that only one thread can access the internal data structure at any given millisecond.
 
 ### 2. Concurrent Programming
 *   **Achievement:** True parallel execution of data production and consumption.
@@ -86,7 +86,7 @@ java -cp src com.assessment.app.Main
 
 **3. Run Unit Tests**
 ```bash
-java -cp src com.assessment.tests.TestBlockingQueue
+java -cp src com.assessment.tests.TestSharedQueue
 ```
 
 ## 🧪 Test Coverage & Scenarios

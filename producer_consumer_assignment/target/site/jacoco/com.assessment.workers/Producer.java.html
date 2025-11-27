@@ -2,26 +2,26 @@
 
 import java.util.List;
 import java.util.Random;
-import com.assessment.core.SimpleBlockingQueue;
+import com.assessment.core.SharedQueue;
 
 // The Producer task that generates data and puts it into the shared queue
 public class Producer implements Runnable {
-    private final SimpleBlockingQueue&lt;Integer&gt; queue;
-    private final List&lt;Integer&gt; sourceData;
+    private final SharedQueue&lt;Integer&gt; queue;
+    private final List&lt;Integer&gt; sourceContainer;
 <span class="fc" id="L11">    private final Random random = new Random();</span>
 
-<span class="fc" id="L13">    public Producer(SimpleBlockingQueue&lt;Integer&gt; queue, List&lt;Integer&gt; sourceData) {</span>
+<span class="fc" id="L13">    public Producer(SharedQueue&lt;Integer&gt; queue, List&lt;Integer&gt; sourceContainer) {</span>
 <span class="fc" id="L14">        this.queue = queue;</span>
-<span class="fc" id="L15">        this.sourceData = sourceData;</span>
+<span class="fc" id="L15">        this.sourceContainer = sourceContainer;</span>
 <span class="fc" id="L16">    }</span>
 
     // The main execution logic for the producer thread
     @Override
     public void run() {
         try {
-<span class="fc" id="L22">            System.out.println(&quot;\n[Producer] Starting to process &quot; + sourceData.size() + &quot; items.&quot;);</span>
+<span class="fc" id="L22">            System.out.println(&quot;\n[Producer] Starting to process &quot; + sourceContainer.size() + &quot; items.&quot;);</span>
 
-<span class="fc bfc" id="L24" title="All 2 branches covered.">            for (Integer item : sourceData) {</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">            for (Integer item : sourceContainer) {</span>
 <span class="fc" id="L25">                System.out.println(&quot;[Producer] Reading from source: &quot; + item);</span>
 <span class="fc" id="L26">                queue.put(item);</span>
 

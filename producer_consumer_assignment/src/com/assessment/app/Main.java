@@ -1,7 +1,7 @@
 package com.assessment.app;
 
 import java.util.*;
-import com.assessment.core.SimpleBlockingQueue;
+import com.assessment.core.SharedQueue;
 import com.assessment.workers.Consumer;
 import com.assessment.workers.Producer;
 
@@ -12,18 +12,18 @@ public class Main {
         Random random = new Random();
 
         // 1. Generate Random Source Data
-        Set<Integer> uniqueNumbers = new HashSet<>();
-        int randomLength = random.nextInt(15); // Length 0 to 14
+        Set<Integer> randomSourceData = new HashSet<>();
+        int randomSourceSize = random.nextInt(15); // Length 0 to 14
 
-        System.out.println("Generating " + randomLength + " unique items...");
+        System.out.println("Generating " + randomSourceSize + " unique items...");
 
         // Generate unique numbers until we reach the desired length
-        while (uniqueNumbers.size() < randomLength) {
+        while (randomSourceData.size() < randomSourceSize) {
             int num = random.nextInt(100) + 1; // 1-100
-            uniqueNumbers.add(num);
+            randomSourceData.add(num);
         }
 
-        List<Integer> sourceContainer = new ArrayList<>(uniqueNumbers);
+        List<Integer> sourceContainer = new ArrayList<>(randomSourceData);
         Collections.shuffle(sourceContainer);
 
         System.out.println("=== Source Container Generated ===");
@@ -46,7 +46,7 @@ public class Main {
         }
 
         // 3. Setup Components
-        SimpleBlockingQueue<Integer> sharedQueue = new SimpleBlockingQueue<>(capacity);
+        SharedQueue<Integer> sharedQueue = new SharedQueue<>(capacity);
         List<Integer> destinationContainer = new ArrayList<>();
 
         Producer producer = new Producer(sharedQueue, sourceContainer);

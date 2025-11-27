@@ -1,7 +1,7 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 producer-consumer-assignment,com.assessment.app,Main,20,141,3,9,7,40,4,5,1,2
-producer-consumer-assignment,com.assessment.core,SimpleBlockingQueue,0,102,0,4,0,22,0,5,0,3
+producer-consumer-assignment,com.assessment.core,SharedQueue,0,102,0,4,0,22,0,5,0,3
 producer-consumer-assignment,com.assessment.workers,Consumer,3,55,0,2,2,17,0,3,0,2
 producer-consumer-assignment,com.assessment.workers,Producer,3,60,0,2,2,16,0,3,0,2
-producer-consumer-assignment,com.assessment.tests,TestBlockingQueue.TestResult,0,9,0,0,0,4,0,1,0,1
-producer-consumer-assignment,com.assessment.tests,TestBlockingQueue,78,471,14,22,29,115,18,15,4,11
+producer-consumer-assignment,com.assessment.tests,TestSharedQueue,78,471,14,22,29,115,18,15,4,11
+producer-consumer-assignment,com.assessment.tests,TestSharedQueue.TestResult,0,9,0,0,0,4,0,1,0,1

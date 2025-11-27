@@ -4,12 +4,12 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 // A custom thread-safe queue implementation using a monitor lock (synchronized/wait/notify)
-public class SimpleBlockingQueue<T> {
+public class SharedQueue<T> {
     private final Queue<T> queue = new LinkedList<>();
     private final int capacity;
     private final Object lock = new Object();
 
-    public SimpleBlockingQueue(int capacity) {
+    public SharedQueue(int capacity) {
         this.capacity = capacity;
     }
 

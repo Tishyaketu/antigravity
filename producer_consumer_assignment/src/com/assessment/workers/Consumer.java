@@ -2,17 +2,17 @@ package com.assessment.workers;
 
 import java.util.List;
 import java.util.Random;
-import com.assessment.core.SimpleBlockingQueue;
+import com.assessment.core.SharedQueue;
 
 // The Consumer task that takes data from the shared queue and processes it
 public class Consumer implements Runnable {
-    private final SimpleBlockingQueue<Integer> queue;
-    private final List<Integer> destinationList;
+    private final SharedQueue<Integer> queue;
+    private final List<Integer> destinationContainer;
     private final Random random = new Random();
 
-    public Consumer(SimpleBlockingQueue<Integer> queue, List<Integer> destinationList) {
+    public Consumer(SharedQueue<Integer> queue, List<Integer> destinationContainer) {
         this.queue = queue;
-        this.destinationList = destinationList;
+        this.destinationContainer = destinationContainer;
     }
 
     // The main execution logic for the consumer thread
@@ -34,9 +34,10 @@ public class Consumer implements Runnable {
                     break;
                 }
 
-                destinationList.add(item);
-                System.out.println("\t[Destination] Added " + item + " | Current Dest: " + destinationList + " (Size: "
-                        + destinationList.size() + ")");
+                destinationContainer.add(item);
+                System.out.println(
+                        "\t[Destination] Added " + item + " | Current Dest: " + destinationContainer + " (Size: "
+                                + destinationContainer.size() + ")");
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

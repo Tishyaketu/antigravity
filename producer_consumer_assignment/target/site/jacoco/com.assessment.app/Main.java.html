@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">producer-consumer-assignment</a> &gt; <a href="index.source.html" class="el_package">com.assessment.app</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">package com.assessment.app;
 
 import java.util.*;
-import com.assessment.core.SimpleBlockingQueue;
+import com.assessment.core.SharedQueue;
 import com.assessment.workers.Consumer;
 import com.assessment.workers.Producer;
 
@@ -12,18 +12,18 @@ import com.assessment.workers.Producer;
 <span class="fc" id="L12">        Random random = new Random();</span>
 
         // 1. Generate Random Source Data
-<span class="fc" id="L15">        Set&lt;Integer&gt; uniqueNumbers = new HashSet&lt;&gt;();</span>
-<span class="fc" id="L16">        int randomLength = random.nextInt(15); // Length 0 to 14</span>
+<span class="fc" id="L15">        Set&lt;Integer&gt; randomSourceData = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L16">        int randomSourceSize = random.nextInt(15); // Length 0 to 14</span>
 
-<span class="fc" id="L18">        System.out.println(&quot;Generating &quot; + randomLength + &quot; unique items...&quot;);</span>
+<span class="fc" id="L18">        System.out.println(&quot;Generating &quot; + randomSourceSize + &quot; unique items...&quot;);</span>
 
         // Generate unique numbers until we reach the desired length
-<span class="fc bfc" id="L21" title="All 2 branches covered.">        while (uniqueNumbers.size() &lt; randomLength) {</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        while (randomSourceData.size() &lt; randomSourceSize) {</span>
 <span class="fc" id="L22">            int num = random.nextInt(100) + 1; // 1-100</span>
-<span class="fc" id="L23">            uniqueNumbers.add(num);</span>
+<span class="fc" id="L23">            randomSourceData.add(num);</span>
 <span class="fc" id="L24">        }</span>
 
-<span class="fc" id="L26">        List&lt;Integer&gt; sourceContainer = new ArrayList&lt;&gt;(uniqueNumbers);</span>
+<span class="fc" id="L26">        List&lt;Integer&gt; sourceContainer = new ArrayList&lt;&gt;(randomSourceData);</span>
 <span class="fc" id="L27">        Collections.shuffle(sourceContainer);</span>
 
 <span class="fc" id="L29">        System.out.println(&quot;=== Source Container Generated ===&quot;);</span>
@@ -46,7 +46,7 @@ import com.assessment.workers.Producer;
         }
 
         // 3. Setup Components
-<span class="fc" id="L49">        SimpleBlockingQueue&lt;Integer&gt; sharedQueue = new SimpleBlockingQueue&lt;&gt;(capacity);</span>
+<span class="fc" id="L49">        SharedQueue&lt;Integer&gt; sharedQueue = new SharedQueue&lt;&gt;(capacity);</span>
 <span class="fc" id="L50">        List&lt;Integer&gt; destinationContainer = new ArrayList&lt;&gt;();</span>
 
 <span class="fc" id="L52">        Producer producer = new Producer(sharedQueue, sourceContainer);</span>

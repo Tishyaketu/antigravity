@@ -2,26 +2,26 @@ package com.assessment.workers;
 
 import java.util.List;
 import java.util.Random;
-import com.assessment.core.SimpleBlockingQueue;
+import com.assessment.core.SharedQueue;
 
 // The Producer task that generates data and puts it into the shared queue
 public class Producer implements Runnable {
-    private final SimpleBlockingQueue<Integer> queue;
-    private final List<Integer> sourceData;
+    private final SharedQueue<Integer> queue;
+    private final List<Integer> sourceContainer;
     private final Random random = new Random();
 
-    public Producer(SimpleBlockingQueue<Integer> queue, List<Integer> sourceData) {
+    public Producer(SharedQueue<Integer> queue, List<Integer> sourceContainer) {
         this.queue = queue;
-        this.sourceData = sourceData;
+        this.sourceContainer = sourceContainer;
     }
 
     // The main execution logic for the producer thread
     @Override
     public void run() {
         try {
-            System.out.println("\n[Producer] Starting to process " + sourceData.size() + " items.");
+            System.out.println("\n[Producer] Starting to process " + sourceContainer.size() + " items.");
 
-            for (Integer item : sourceData) {
+            for (Integer item : sourceContainer) {
                 System.out.println("[Producer] Reading from source: " + item);
                 queue.put(item);
 

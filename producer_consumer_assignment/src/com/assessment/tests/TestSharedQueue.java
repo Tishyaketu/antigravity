@@ -3,16 +3,15 @@ package com.assessment.tests;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
-import com.assessment.core.SimpleBlockingQueue;
+import com.assessment.core.SharedQueue;
 
 import com.assessment.app.Main;
 import java.io.InputStream;
-import java.io.ByteArrayInputStream;
 
 // Custom test harness to verify the Producer-Consumer implementation.
 // We use this manual approach to have fine-grained control over thread states and assertions
 // which can be tricky with standard unit testing frameworks alone.
-public class TestBlockingQueue {
+public class TestSharedQueue {
 
     // Simple class to hold test results for the summary
     static class TestResult {
@@ -123,7 +122,7 @@ public class TestBlockingQueue {
         // Setup: Transfer 100 items with a tiny buffer (capacity 2)
         // This forces intense context switching.
         int itemCount = 100;
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(2);
+        SharedQueue<Integer> queue = new SharedQueue<>(2);
         List<Integer> source = new ArrayList<>();
         for (int i = 0; i < itemCount; i++)
             source.add(i);
@@ -178,7 +177,7 @@ public class TestBlockingQueue {
     public static boolean testProducerBlocksWhenFull() throws InterruptedException {
         System.out.print("[Test 3.4] Producer Blocks when Full... ");
 
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(1);
+        SharedQueue<Integer> queue = new SharedQueue<>(1);
         queue.put(1); // Fill the queue
 
         Thread t = new Thread(() -> {
@@ -209,7 +208,7 @@ public class TestBlockingQueue {
     public static boolean testConsumerBlocksWhenEmpty() throws InterruptedException {
         System.out.print("[Test 3.5] Consumer Blocks when Empty... ");
 
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(1); // Empty
+        SharedQueue<Integer> queue = new SharedQueue<>(1); // Empty
 
         Thread t = new Thread(() -> {
             try {
@@ -245,7 +244,7 @@ public class TestBlockingQueue {
         source.add(300);
 
         List<Integer> dest = Collections.synchronizedList(new ArrayList<>());
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(2);
+        SharedQueue<Integer> queue = new SharedQueue<>(2);
 
         com.assessment.workers.Producer producer = new com.assessment.workers.Producer(queue, source);
         com.assessment.workers.Consumer consumer = new com.assessment.workers.Consumer(queue, dest);
