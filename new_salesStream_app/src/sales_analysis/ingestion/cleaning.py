@@ -1,4 +1,4 @@
-def clean_currency(value):
+def currency_cleaner(value):
     """
     Robustly parses currency strings (e.g., '₹1,099') into floats.
     Handles missing values, currency symbols, and commas.
@@ -11,7 +11,7 @@ def clean_currency(value):
     except ValueError:
         return 0.0
 
-def clean_percentage(value):
+def percent_cleaner(value):
     """
     Parses percentage strings (e.g., '64%') into floats.
     """
@@ -22,7 +22,7 @@ def clean_percentage(value):
     except ValueError:
         return 0.0
 
-def clean_rating(value):
+def rating_cleaner(value):
     """
     Parses rating strings which might contain extra metadata (e.g., '4.5|...').
     Extracts the primary numeric rating.
@@ -35,7 +35,7 @@ def clean_rating(value):
     except (ValueError, AttributeError):
         return 0.0
 
-def clean_count(value):
+def count_cleaner(value):
     """
     Parses count strings with commas (e.g., '24,269') into integers.
     """

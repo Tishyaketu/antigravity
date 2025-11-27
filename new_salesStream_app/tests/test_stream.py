@@ -9,7 +9,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../src'))
 from sales_analysis.core.stream import Stream
 from sales_analysis.core.models import Product
 from sales_analysis.ingestion.cleaning import (
-    clean_currency, clean_rating, clean_count
+    currency_cleaner, rating_cleaner, count_cleaner
 )
 
 class TestStreamProcessor(unittest.TestCase):
@@ -33,15 +33,15 @@ class TestStreamProcessor(unittest.TestCase):
     
     def test_clean_currency(self):
         """Test if currency strings are parsed correctly."""
-        self.assertEqual(clean_currency("₹1,099"), 1099.0)
-        self.assertEqual(clean_currency("1,000"), 1000.0)
-        self.assertEqual(clean_currency(None), 0.0)
+        self.assertEqual(currency_cleaner("₹1,099"), 1099.0)
+        self.assertEqual(currency_cleaner("1,000"), 1000.0)
+        self.assertEqual(currency_cleaner(None), 0.0)
 
     def test_clean_rating(self):
         """Test if dirty rating strings are fixed."""
-        self.assertEqual(clean_rating("4.5"), 4.5)
-        self.assertEqual(clean_rating("4.5|1234"), 4.5)
-        self.assertEqual(clean_rating("NotRated"), 0.0)
+        self.assertEqual(rating_cleaner("4.5"), 4.5)
+        self.assertEqual(rating_cleaner("4.5|1234"), 4.5)
+        self.assertEqual(rating_cleaner("NotRated"), 0.0)
 
     # --- PART 2: TESTING CORE STREAM LOGIC ---
 
