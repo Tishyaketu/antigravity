@@ -1,6 +1,6 @@
 # 🛠️ Intuit Build Challenge: Combined Solutions
 
-This document combines the technical READMEs for the two required assignments in the Intuit Build Challenge, demonstrating proficiency in **Concurrent Programming (Assignment 1)** and **Functional Programming/Data Analysis (Assignment 2)**.
+This document combines the technical READMEs for the two required assignments in the Intuit Build Challenge, demonstrating proficiency in **Concurrent Programming (Assignment 1)** and **Functional Programming/Data Analysis (Assignment 2)**. The console outputs screenshots are included in the results folder.
 
 ---
 
@@ -109,6 +109,8 @@ python3 -m unittest discover -s tests -v
 ```
 
 #### Check Code Coverage:
+
+Kindly make sure The `coverage` Python package is installed to check code coverage.
 
 ```bash
 python3 -m coverage run --source=src -m unittest discover -s tests -v
